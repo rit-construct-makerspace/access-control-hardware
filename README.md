@@ -22,7 +22,10 @@ The access control system is currently being developed to version 2.1.X.
     * Core: Consider switching button on the front? This one is overkill and has a lot more circuits tha needed.
     * Core: Better alternative to MicroSD card for config file. Maybe OTP EPROM in a DIP-8 slot? More obscure, can be fully enclosed in the system, more reliable connection. Microchip AT24C128 or similar in standard format.
     * Core: Consider swapping to RGB CBI LED? Takes up less space, more room for a button now.
-    * Core: Consider mounting LEDs and button on daughterboard with cable? Allows more versatile enclosure designs, but at cost of larger enclosures. 
+    * Core: Consider mounting LEDs and button on daughterboard with cable? Allows more versatile enclosure designs, but at cost of larger enclosures.
+    * Core: Consider replacing SOT-353 74LVC1G17GW, currently the hardest-to-PNP component on the board.
+    * Core: Consider replacing Littel Fuses with MT9700 or similar active protections. Much smaller, cheaper. Need to test power flow control setup.
+    * Core: Add TVS to DB-9 connector.
 
 ## Instructions & Further Documentation
 [See the wiki on GitHub!](https://github.com/rit-construct-makerspace/access-control-hardware/wiki) 
