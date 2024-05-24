@@ -22,6 +22,8 @@
     * Comes with a cable harness for easy mounting
   * Original 3 position key switch re-added to handle lockout
   * External UI uses same DB9 connection, repurposes 3 unused pins.
+  * Communicate over RS232 UART, with interrupt pin
+  * Implement UART switch to select between programming UART and RS232
 * Consider replacing SOT-353 74LVC1G17GW, currently the hardest-to-PNP component on the board.
 * Consider replacing Littel Fuses with fuses that are smaller, cheaper. SMD thermal or automotive blade maybe? 
 * If data flow control for reprogramming works, remove programming buttons and replace them with test pads
