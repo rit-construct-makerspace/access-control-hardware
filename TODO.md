@@ -28,6 +28,9 @@
 * Add TVS to DB-9 connector.
 * Remove native USB connection, MUX, powerpath control
 * Diode USB power, DB9 power to regulator to run ESP32 for programming
+* Add second DB9 to the back for either a second switch or for the new user interface
+* Add secondary wiring connection in parallel to DB9, that can be used for smaller integrations of the system in a single box.
+  * JST or similar connector with the same number of pins connected
 
 ## USB Switch
 * Replace USB-C connector with something easier to solder?
