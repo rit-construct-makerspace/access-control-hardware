@@ -17,19 +17,17 @@
   * Microchip AT24C128 or similar in standard format.
   * Should make custom programmer/configuration software
 * Changes to user interface;
-  * Consider smaller button? Current one overkill. 
-  * Consider swapping to RGB CBI LED? Takes up less space, more room for a button now.
-  * Consider mounting LEDs and button on daughterboard with cable?
-    * Allows more versatile enclosure designs, but at cost of larger enclosures.
-  * New concept: Remove CBIs and buttons, switch to a Switch19-B-M-F1
-    * 19mm circular button with integrated WS2812
-    * Comes with a cable harness that can be externally mounted
+  * Externally mounted user interface for more versatile positioning
+  * 19mm circular button with integrated WS2812 (19-B-M-F1)
+    * Comes with a cable harness for easy mounting
+  * Original 3 position key switch re-added to handle lockout
+  * External UI uses same DB9 connection, repurposes 3 unused pins.
 * Consider replacing SOT-353 74LVC1G17GW, currently the hardest-to-PNP component on the board.
-* Consider replacing Littel Fuses with MT9700 or similar active protections. Much smaller, cheaper.
+* Consider replacing Littel Fuses with fuses that are smaller, cheaper. SMD thermal or automotive blade maybe? 
 * If data flow control for reprogramming works, remove programming buttons and replace them with test pads
 * Add TVS to DB-9 connector.
 * Remove native USB connection, MUX, powerpath control
-* Diode OR the USB, DB9 power together
+* Diode USB power, DB9 power to regulator to run ESP32 for programming
 
 ## USB Switch
 * Replace USB-C connector with something easier to solder?
@@ -59,6 +57,11 @@
 * Power from each diode OR'ed together, consider idea diode controllers?
 * Line driver on hub helps with fan-out on NO signal
 * Address line grounded to indiate hub present
+
+## New Component: User interface
+* See "core" section for more details
+* Communicates as i2c slave with interrupt pin
+* Basic microcontroller like AtTiny to support everything on this side
 
 ## New Component: EEPROM Programmer
 * USB-connected EEPROM programmer with a ZIF socket
