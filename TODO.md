@@ -20,6 +20,9 @@
   * Consider swapping to RGB CBI LED? Takes up less space, more room for a button now.
   * Consider mounting LEDs and button on daughterboard with cable?
     * Allows more versatile enclosure designs, but at cost of larger enclosures.
+  * New concept: Remove CBIs and buttons, switch to a Switch19-B-M-F1
+    * 19mm circular button with integrated WS2812
+    * Comes with a cable harness that can be externally mounted
 * Consider replacing SOT-353 74LVC1G17GW, currently the hardest-to-PNP component on the board.
 * Consider replacing Littel Fuses with MT9700 or similar active protections. Much smaller, cheaper.
 * If data flow control for reprogramming works, remove programming buttons and replace them with test pads
@@ -28,7 +31,7 @@
 * Diode OR the USB, DB9 power together
 
 ## USB Switch
-* Replace USB-C connector with something easier to solder
+* Replace USB-C connector with something easier to solder?
 
 ## Signal Relay
 * Add power inlet with fuse, USB connector likely
