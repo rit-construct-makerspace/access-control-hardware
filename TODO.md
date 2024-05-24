@@ -3,7 +3,8 @@
 * Test all electronics Vx.x.1
 * Design Concept Change: Power for the system must come from the switch, even if the switch cannot harvest the power itself
 * Switch as many components to SMD as possible
-* Add solder nuts to all boards. 
+* Add solder nuts to all boards.
+* Add diode to output of each switch.
 
 ## Core:
 
