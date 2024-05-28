@@ -42,9 +42,6 @@
 * Add power inlet with fuse, USB connector likely
 * Consider swapping to relay rated to 250VAC, so we can interrupt mains contactors on 220V systems
 
-## New Switch: KMX Switch
-* To reduce wiring complexity on the KMX, build a variant of the signal relay that has the correct pinout directly to a DB9. 
-
 ## New Switch: Contactor Switch
 * Variant of the AC switch, designed to integrate with machines that already have a contactor embedded in them.
 * Screw terminals directly on board for live in, live out, neutral, earth.
