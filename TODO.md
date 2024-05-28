@@ -8,7 +8,7 @@
 
 ## Core:
 
-* Remove 4x M3 solder nuts on bottom (adhesive attachment likely in deployment).
+* Remove 4x M3 solder nuts on bottom (adhesive attachment likely in deployment). 
 * Add 2x M2 tall solder nuts to left and right of card to constrain card when inserted, better assembe box.
 * Move R9 further from the center, so the "NFC Spacer" part has more PCB to adhere to.
 * Better alternative to MicroSD card for config file.
