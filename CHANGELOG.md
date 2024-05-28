@@ -25,12 +25,17 @@ Click on a section to expand it and view changes
 <details>
   <summary>KMX Switch</summary>
   
-  ## V2.0.1 - May 2024
+  ## V2.0.1 - WIP
   * Initial release
 </details>
 
 <details>
   <summary>Signal Relay</summary>
+
+  ## V2.0.2 - WIP
+  * Add USB port, fuse for powering system
+  * Swapped to mostly SMD parts for easier assembly
+  * Replaced relay with 220V-rated variant for directly interfacing with contactor signals
   
   ## V2.0.1 - May 2024
   * Initial release
