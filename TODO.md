@@ -35,9 +35,6 @@
 * Add secondary wiring connection in parallel to DB9, that can be used for smaller integrations of the system in a single box.
   * JST or similar connector with the same number of pins connected
 
-## USB Switch
-* Replace USB-C connector with something easier to solder?
-
 ## Signal Relay
 * Add power inlet with fuse, USB connector likely
 * Consider swapping to relay rated to 250VAC, so we can interrupt mains contactors on 220V systems
