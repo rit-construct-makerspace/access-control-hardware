@@ -5,6 +5,9 @@ Click on a section to expand it and view changes
 <details>
   <summary>Core</summary>
   
+  ## V2.2.1 - WIP
+  * U11 P3 connected to ground
+  
   ## V2.1.1 - May 2024
   * Initial public relaese
   
