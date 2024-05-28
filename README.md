@@ -14,6 +14,9 @@ The access control system is currently being developed to version 2.1.X.
 ## TODO
 See TODO.md in root directory. 
 
+## CHANGELOG
+See CHANGELOG.md in root directory.
+
 ## Instructions & Further Documentation
 [See the wiki on GitHub!](https://github.com/rit-construct-makerspace/access-control-hardware/wiki) 
 
