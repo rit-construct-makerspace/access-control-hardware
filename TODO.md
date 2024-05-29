@@ -27,6 +27,7 @@
 * Consider replacing SOT-353 74LVC1G17GW, currently the hardest-to-PNP component on the board.
 * Consider replacing Littel Fuses with fuses that are smaller, cheaper. SMD thermal or automotive blade maybe? 
 * If data flow control for reprogramming works, remove programming buttons and replace them with test pads
+  * Update: If removing USB in favor of DB9 serial, leave buttons but make them smaller. 
 * Add TVS to DB-9 connector.
 * Remove native USB connection, MUX, powerpath control
 * Diode USB power, DB9 power to regulator to run ESP32 for programming
@@ -65,3 +66,7 @@
 ## New Component: Monitor Panel
 * Allows lab manager to monitor machine states, respond to help requests
 * Acts as a gateway for Cores to connect to internet, database
+
+## New Component: USB Adapter
+* Piggyback off of the 232 connection in the DB9
+* Make an adapter to do USB serial into the box without the need for an actual USB connector
