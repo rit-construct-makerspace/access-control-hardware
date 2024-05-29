@@ -59,10 +59,6 @@
 * Communicates as i2c slave with interrupt pin
 * Basic microcontroller like AtTiny to support everything on this side
 
-## New Component: EEPROM Programmer
-* USB-connected EEPROM programmer with a ZIF socket
-* Allows easy setup of the configuration EEPROM
-
 ## New Component: Monitor Panel
 * Allows lab manager to monitor machine states, respond to help requests
 * Acts as a gateway for Cores to connect to internet, database
