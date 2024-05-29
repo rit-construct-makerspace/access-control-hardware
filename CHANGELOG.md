@@ -50,3 +50,10 @@ Click on a section to expand it and view changes
   ## V2.0.1 - May 2024
   * Initial release
 </details>
+
+<details>
+  <summary>USB Adaptery</summary>
+  
+  ## V2.0.1 - WIP
+  * Initial release
+</details>
