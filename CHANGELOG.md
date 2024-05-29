@@ -52,7 +52,7 @@ Click on a section to expand it and view changes
 </details>
 
 <details>
-  <summary>USB Adaptery</summary>
+  <summary>USB Adapter</summary>
   
   ## V2.0.1 - WIP
   * Initial release
