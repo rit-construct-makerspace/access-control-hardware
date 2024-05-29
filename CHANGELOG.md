@@ -57,3 +57,10 @@ Click on a section to expand it and view changes
   ## V2.0.1 - WIP
   * Initial release
 </details>
+
+<details>
+  <summary>EEPROM Programmer</summary>
+  
+  ## V2.0.1 - WIP
+  * Initial release
+</details>
