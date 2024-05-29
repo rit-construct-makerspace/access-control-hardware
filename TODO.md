@@ -66,7 +66,3 @@
 ## New Component: Monitor Panel
 * Allows lab manager to monitor machine states, respond to help requests
 * Acts as a gateway for Cores to connect to internet, database
-
-## New Component: USB Adapter
-* Piggyback off of the 232 connection in the DB9
-* Make an adapter to do USB serial into the box without the need for an actual USB connector
