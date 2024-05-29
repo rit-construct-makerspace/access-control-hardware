@@ -8,10 +8,10 @@
 
 ## Core:
 
-* Remove 4x M3 solder nuts on bottom (adhesive attachment likely in deployment). 
-* Add 2x M2 tall solder nuts to left and right of card to constrain card when inserted, better assembe box.
+* Remove 4x M3 solder nuts on bottom (adhesive attachment likely in deployment). WIP
+* Add 2x M2 tall solder nuts to left and right of card to constrain card when inserted, better assembe box. WIP
 * Move R9 further from the center, so the "NFC Spacer" part has more PCB to adhere to.
-* Better alternative to MicroSD card for config file.
+* Better alternative to MicroSD card for config file. WIP
   * Maybe OTP EPROM in a DIP-8 slot?
   * More obscure, can be fully enclosed in the system, more reliable connection.
   * Microchip AT24C128 or similar in standard format.
@@ -21,17 +21,17 @@
   * 19mm circular button with integrated WS2812 (19-B-M-F1)
     * Comes with a cable harness for easy mounting
   * Original 3 position key switch re-added to handle lockout
-  * External UI uses same DB9 connection, repurposes 3 unused pins.
-  * Communicate over RS232 UART, with interrupt pin
+  * External UI uses same DB9 connection, repurposes 3 unused pins. 
+  * Communicate over RS232 UART, with interrupt pin WIP
   * Implement UART switch to select between programming UART and RS232
-* Consider replacing SOT-353 74LVC1G17GW, currently the hardest-to-PNP component on the board.
-* Consider replacing Littel Fuses with fuses that are smaller, cheaper. SMD thermal or automotive blade maybe? 
+* Consider replacing SOT-353 74LVC1G17GW, currently the hardest-to-PNP component on the board. WIP
+* Consider replacing Littel Fuses with fuses that are smaller, cheaper. SMD thermal or automotive blade maybe? WIP
 * If data flow control for reprogramming works, remove programming buttons and replace them with test pads
-  * Update: If removing USB in favor of DB9 serial, leave buttons but make them smaller. 
+  * Update: If removing USB in favor of DB9 serial, leave buttons but make them smaller.
+  * Add labels to buttons
 * Add TVS to DB-9 connector.
-* Remove native USB connection, MUX, powerpath control
-* Diode USB power, DB9 power to regulator to run ESP32 for programming
-* Add second DB9 to the back for either a second switch or for the new user interface
+* Remove native USB connection, MUX, powerpath control WIP
+* Add second DB9 to the back for either a second switch or for the new user interface WIP
 * Add secondary wiring connection in parallel to DB9, that can be used for smaller integrations of the system in a single box.
   * JST or similar connector with the same number of pins connected
 
