@@ -40,6 +40,8 @@
 * Screw terminals directly on board for live in, live out, neutral, earth.
 * Able to switch a resistive load of a few amps at 220VAC
 * Same power harvesting circuitry as AC switch
+* Screw terminals to integrate
+* No earth connection internal to machine, so no EMI on power harvesting
 
 ## New Switch: USB Interruptor
 * Single USB in, USB out
