@@ -1,6 +1,5 @@
 ## System-Wide:
 
-* Test all electronics Vx.x.1
 * Design Concept Change: Power for the system must come from the switch, even if the switch cannot harvest the power itself
 * Switch as many components to SMD as possible
 * Add solder nuts to all boards.
@@ -8,6 +7,15 @@
 
 ## Core:
 
+* Issues Found in Testing:
+  * Power path control circuitry only works if there's 3.3v present, needs to be jump-started basically.
+* Things found working in testing:
+  * USB-UART bridge
+  * ESP32 UART connection
+  * Regulator
+  * Auto flashing circuitry
+  * debug LED
+  * Buzzer and driver circuitry 
 * Remove 4x M3 solder nuts on bottom (adhesive attachment likely in deployment). WIP
 * Add 2x M2 tall solder nuts to left and right of card to constrain card when inserted, better assembe box. WIP
 * Move R9 further from the center, so the "NFC Spacer" part has more PCB to adhere to.
@@ -34,6 +42,9 @@
 * Add second DB9 to the back for either a second switch or for the new user interface WIP
 * Add secondary wiring connection in parallel to DB9, that can be used for smaller integrations of the system in a single box.
   * JST or similar connector with the same number of pins connected
+ 
+## AC Power Switch
+* Change neutral/earth connections to 62221-1 from TE Connectivity (pending part design)
 
 ## New Switch: Contactor Switch
 * Variant of the AC switch, designed to integrate with machines that already have a contactor embedded in them.
