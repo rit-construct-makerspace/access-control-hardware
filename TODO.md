@@ -5,6 +5,8 @@
 * Add solder nuts to all boards.
 * Add diode to output of each switch.
 
+* Write documentation for all new updates, switches, etc. 
+
 ## Core:
 
 * Issues Found in Testing:
@@ -46,14 +48,6 @@
 ## AC Power Switch
 * Change neutral/earth connections to 62221-1 from TE Connectivity (pending part design)
 
-## New Switch: Contactor Switch
-* Variant of the AC switch, designed to integrate with machines that already have a contactor embedded in them.
-* Screw terminals directly on board for live in, live out, neutral, earth.
-* Able to switch a resistive load of a few amps at 220VAC
-* Same power harvesting circuitry as AC switch
-* Screw terminals to integrate
-* No earth connection internal to machine, so no EMI on power harvesting
-
 ## New Switch: USB Interruptor
 * Single USB in, USB out
 * Switch fully interrupts not only power but also data
@@ -66,10 +60,11 @@
 * Power from each diode OR'ed together, consider idea diode controllers?
 * Line driver on hub helps with fan-out on NO signal
 * Address line grounded to indiate hub present
+ * This is how I was going to indicate the User Interface, so maybe need alternative solution? 
 
 ## New Component: User interface
 * See "core" section for more details
-* Communicates as i2c slave with interrupt pin
+* Communicates as RS232 device.
 * Basic microcontroller like AtTiny to support everything on this side
 
 ## New Component: Monitor Panel
