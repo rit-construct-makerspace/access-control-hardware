@@ -29,12 +29,6 @@
   * Microchip AT24C128 or similar in standard format.
   * Should make custom programmer/configuration software
 * Changes to user interface;
-  * Externally mounted user interface for more versatile positioning
-  * 19mm circular button with integrated WS2812 (19-B-M-F1)
-    * Comes with a cable harness for easy mounting
-  * Original 3 position key switch re-added to handle lockout
-  * External UI uses same DB9 connection, repurposes 3 unused pins. 
-  * Communicate over RS232 UART, with interrupt pin WIP
   * Implement UART switch to select between programming UART and RS232
 * Consider replacing SOT-353 74LVC1G17GW, currently the hardest-to-PNP component on the board. WIP
 * Consider replacing Littel Fuses with fuses that are smaller, cheaper. SMD thermal or automotive blade maybe? WIP
@@ -44,8 +38,6 @@
 * Add TVS to DB-9 connector.
 * Remove native USB connection, MUX, powerpath control WIP
 * Add second DB9 to the back for either a second switch or for the new user interface WIP
-* Add secondary wiring connection in parallel to DB9, that can be used for smaller integrations of the system in a single box.
-  * JST or similar connector with the same number of pins connected
  
 ## AC Power Switch
 * Change neutral/earth connections to 62221-1 from TE Connectivity (pending part design)
@@ -63,11 +55,6 @@
 * Line driver on hub helps with fan-out on NO signal
 * Address line grounded to indiate hub present
  * This is how I was going to indicate the User Interface, so maybe need alternative solution? 
-
-## New Component: User interface
-* See "core" section for more details
-* Communicates as RS232 device.
-* Basic microcontroller like AtTiny to support everything on this side
 
 ## New Component: Monitor Panel
 * Allows lab manager to monitor machine states, respond to help requests
