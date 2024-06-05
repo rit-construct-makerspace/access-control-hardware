@@ -59,3 +59,8 @@
 ## New Component: Monitor Panel
 * Allows lab manager to monitor machine states, respond to help requests
 * Acts as a gateway for Cores to connect to internet, database
+
+## New Extra: Bypass Plug
+* Simple device that is just a DB9 to a switch
+* Allows you to use a device with a power switch connected, without actually having to be integrated with the rest of the system
+* Useful for allowing machines to still work while deploying things
