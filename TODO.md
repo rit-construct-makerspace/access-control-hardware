@@ -19,6 +19,7 @@
   * Auto flashing circuitry
   * debug LED
   * Buzzer and driver circuitry 
+* Add level shifting, pulldown resistor to incoming interrupt pins
 * Remove 4x M3 solder nuts on bottom (adhesive attachment likely in deployment). WIP
 * Add 2x M2 tall solder nuts to left and right of card to constrain card when inserted, better assembe box. WIP
 * Move R9 further from the center, so the "NFC Spacer" part has more PCB to adhere to.
