@@ -4,7 +4,8 @@
 * Switch as many components to SMD as possible
 * Add solder nuts to all boards.
 * Add diode to output of each switch.
-* Switch to cheaper 3rd party DS18B20 temperature sensors
+* Switch to cheaper 3rd party DS18B20 temperature sensors (C695837)
+* Add on, power labels to CBis on switches
 
 * Write documentation for all new updates, switches, etc. 
 * Update changelog with major release
