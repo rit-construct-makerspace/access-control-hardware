@@ -7,37 +7,7 @@
 * Switch to cheaper 3rd party DS18B20 temperature sensors
 
 * Write documentation for all new updates, switches, etc. 
-
-## Core:
-
-* Issues Found in Testing:
-  * Power path control circuitry only works if there's 3.3v present, needs to be jump-started basically.
-* Things found working in testing:
-  * USB-UART bridge
-  * ESP32 UART connection
-  * Regulator
-  * Auto flashing circuitry
-  * debug LED
-  * Buzzer and driver circuitry 
-* Add level shifting, pulldown resistor to incoming interrupt pins
-* Remove 4x M3 solder nuts on bottom (adhesive attachment likely in deployment). WIP
-* Add 2x M2 tall solder nuts to left and right of card to constrain card when inserted, better assembe box. WIP
-* Move R9 further from the center, so the "NFC Spacer" part has more PCB to adhere to.
-* Better alternative to MicroSD card for config file. WIP
-  * Maybe OTP EPROM in a DIP-8 slot?
-  * More obscure, can be fully enclosed in the system, more reliable connection.
-  * Microchip AT24C128 or similar in standard format.
-  * Should make custom programmer/configuration software
-* Changes to user interface;
-  * Implement UART switch to select between programming UART and RS232
-* Consider replacing SOT-353 74LVC1G17GW, currently the hardest-to-PNP component on the board. WIP
-* Consider replacing Littel Fuses with fuses that are smaller, cheaper. SMD thermal or automotive blade maybe? WIP
-* If data flow control for reprogramming works, remove programming buttons and replace them with test pads
-  * Update: If removing USB in favor of DB9 serial, leave buttons but make them smaller.
-  * Add labels to buttons
-* Add TVS to DB-9 connector.
-* Remove native USB connection, MUX, powerpath control WIP
-* Add second DB9 to the back for either a second switch or for the new user interface WIP
+* Update changelog with major release
 
 ## New Switch: USB Interruptor
 * Single USB in, USB out
