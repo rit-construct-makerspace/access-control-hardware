@@ -38,9 +38,6 @@
 * Add TVS to DB-9 connector.
 * Remove native USB connection, MUX, powerpath control WIP
 * Add second DB9 to the back for either a second switch or for the new user interface WIP
- 
-## AC Power Switch
-* Change neutral/earth connections to 62221-1 from TE Connectivity (pending part design)
 
 ## New Switch: USB Interruptor
 * Single USB in, USB out
