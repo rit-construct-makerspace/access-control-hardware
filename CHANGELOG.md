@@ -3,23 +3,39 @@
 Click on a section to expand it and view changes
 
 <details>
-  <summary>Core</summary>
+  <summary>Core Main Board</summary>
   
-  ## V2.2.1 - WIP
-  * U11 P3 connected to ground
+  ## V2.2.1 - June 2024
+  * Major overhaul to the design
+  * Removed USB port, replaced with programming header
+  * Removed help button, CBI LEDs
+  * Added second DB9 connector
+  * Replaced MicroSD card slot with DIP8 socket for configuration EEPROM
+  * Added RS232 to DB9 connectors, for interfacing with computer or interface
+  * Added data flow control routing, to direct UART connection between programming/RS232 DB9 1/RS232 DB9 2
+  * Added 2 more soldered nuts to direct card on insertion
+  * Decreased overall board size for tighter integrations
   
   ## V2.1.1 - May 2024
   * Initial public relaese
   
   ## V2.0.1 - May 2024
-  * Internal version for customer discovery
+  * Internal version for internal customer discovery
+</details>
+
+<details>
+  <summary>Core Interface Board</summary>
+
+  ## V2.0.1 - June 2024
+  * Initial release
 </details>
 
 <details>
   <summary>USB Hub Switch</summary>
   
-  ## V2.0.2 - WIP
+  ## V2.0.2 - June 2024
   * Changed to easier-to-solder USB-B port
+  * Increased spacing between USB port and DB9
 
   ## V2.0.1 - May 2024
   * Initial release
@@ -28,14 +44,14 @@ Click on a section to expand it and view changes
 <details>
   <summary>KMX Switch</summary>
   
-  ## V2.0.1 - WIP
+  ## V2.0.1 - June 2024
   * Initial release
 </details>
 
 <details>
   <summary>Signal Relay</summary>
 
-  ## V2.0.2 - WIP
+  ## V2.0.2 - June 2024
   * Add USB port, fuse for powering system
   * Swapped to mostly SMD parts for easier assembly
   * Replaced relay with 220V-rated variant for directly interfacing with contactor signals
@@ -46,21 +62,39 @@ Click on a section to expand it and view changes
 
 <details>
   <summary>AC Relay</summary>
+
+  ## V2.0.2 - June 2024
+  * Flipped AC wiring of the relay
+  * Replaced monolithic 5v regulator with Texas Instruments circuit
+    * Higher efficency
+    * Smaller footprint
+    * Works with higher capacitance
+  * Added double spade connectors for neutral, earth wiring
+    * Makes it easier to wire plugs through the board
+  * Added threaded standoffs for mounting the board
   
   ## V2.0.1 - May 2024
   * Initial release
 </details>
 
 <details>
+  <summary>Contactor Relay</summary>
+
+  ## V2.0.1 - June 2024
+  * Initial Release
+</details>
+
+<details>
   <summary>USB Adapter</summary>
   
-  ## V2.0.1 - WIP
+  ## V2.0.1 - June 2024
   * Initial release
+  * Allows the Core to connect via USB to a computer through DB9
 </details>
 
 <details>
   <summary>EEPROM Programmer</summary>
   
-  ## V2.0.1 - WIP
+  ## V2.0.1 - June 2024
   * Initial release
 </details>

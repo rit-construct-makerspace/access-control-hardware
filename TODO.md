@@ -1,12 +1,5 @@
 ## System-Wide:
 
-* Design Concept Change: Power for the system must come from the switch, even if the switch cannot harvest the power itself
-* Switch as many components to SMD as possible
-* Add solder nuts to all boards.
-* Add diode to output of each switch.
-* Switch to cheaper 3rd party DS18B20 temperature sensors (C695837)
-* Add on, power labels to CBis on switches
-
 * Write documentation for all new updates, switches, etc. 
 * Update changelog with major release
 
@@ -27,8 +20,3 @@
 ## New Component: Monitor Panel
 * Allows lab manager to monitor machine states, respond to help requests
 * Acts as a gateway for Cores to connect to internet, database
-
-## New Extra: Bypass Plug
-* Simple device that is just a DB9 to a switch
-* Allows you to use a device with a power switch connected, without actually having to be integrated with the rest of the system
-* Useful for allowing machines to still work while deploying things
