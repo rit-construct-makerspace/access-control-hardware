@@ -1,7 +1,6 @@
 ## System-Wide:
 
 * Write documentation for all new updates, switches, etc. 
-* Update changelog with major release
 
 ## New Switch: USB Interruptor
 * Single USB in, USB out
