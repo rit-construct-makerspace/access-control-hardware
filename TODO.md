@@ -19,3 +19,8 @@
 ## New Component: Monitor Panel
 * Allows lab manager to monitor machine states, respond to help requests
 * Acts as a gateway for Cores to connect to internet, database
+
+## New Component: Wireless Secondary Switch
+* Allows machines in a room to send a second, lower-priority command wirelessly to a device
+* Example Application: If any machine in the machine shop is powered on, turn on a warning light so deaf/HoH users know to be alert
+* Example Application: Automate the opening/closing of blast gates in the wood shop depending on what machine is turned on
