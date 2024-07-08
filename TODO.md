@@ -5,6 +5,13 @@
 ## Core
 * Diode OR 5v and switch power to enable to MT9700, or else they will never enable power to an Interface when connected
 
+## USB Adapter
+* RX and TX are flipped, need to correct
+* Add switch to swap 232 RX and TX, so you can communicate to either the Core or the Interface for debugging
+
+## Interface
+* RS232 RX and TX are flipped
+
 ## New Switch: USB Interruptor
 * Single USB in, USB out
 * Switch fully interrupts not only power but also data
