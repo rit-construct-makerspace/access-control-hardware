@@ -1,6 +1,9 @@
 ## System-Wide:
 
-* Write documentation for all new updates, switches, etc. 
+* Write documentation for all new updates, switches, etc.
+
+## Core
+* Diode OR 5v and switch power to enable to MT9700, or else they will never enable power to an Interface when connected
 
 ## New Switch: USB Interruptor
 * Single USB in, USB out
@@ -20,7 +23,7 @@
 * Allows lab manager to monitor machine states, respond to help requests
 * Acts as a gateway for Cores to connect to internet, database
 
-## New Component: Wireless Secondary Switch
+## New Component: Remote GPIO
 * Allows machines in a room to send a second, lower-priority command wirelessly to a device
 * Example Application: If any machine in the machine shop is powered on, turn on a warning light so deaf/HoH users know to be alert
 * Example Application: Automate the opening/closing of blast gates in the wood shop depending on what machine is turned on
