@@ -3,7 +3,7 @@
 * Write documentation for all new updates, switches, etc.
 
 ## Core
-* Diode OR 5v and switch power to enable to MT9700, or else they will never enable power to an Interface when connected
+* Diode OR 5v and switch power to enable to MT9700, or else they will never enable when power is connected, or when an interface is connected
 
 ## USB Adapter
 * RX and TX are flipped, need to correct
@@ -11,6 +11,11 @@
 
 ## Interface
 * RS232 RX and TX are flipped
+
+## New Component: Relay
+* Simple device to act as an APSTA to extend the network
+  * Now that the Core is only a STA and the Gateway is only an AP, need Relay to extend the network
+* ESP32, indicator light, and EEPROM same as Core for getting SSID and password
 
 ## New Switch: USB Interruptor
 * Single USB in, USB out
@@ -29,6 +34,7 @@
 ## New Component: Monitor Panel
 * Allows lab manager to monitor machine states, respond to help requests
 * Acts as a gateway for Cores to connect to internet, database
+* This may be replaced with a Python program instead. 
 
 ## New Component: Remote GPIO
 * Allows machines in a room to send a second, lower-priority command wirelessly to a device
