@@ -11,6 +11,7 @@
 
 ## Interface
 * RS232 RX and TX are flipped
+* Make UPDI test point larger for easier programming
 
 ## New Component: Relay
 * Simple device to act as an APSTA to extend the network
