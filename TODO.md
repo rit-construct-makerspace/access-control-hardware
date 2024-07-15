@@ -4,38 +4,49 @@
 
 ## Core
 * Diode OR 5v and switch power to enable to MT9700, or else they will never enable when power is connected, or when an interface is connected
+* Consider consolidating the interface screw terminals into the main board
+  * Makes for a smaller, tighter integration
+  * Reduces costs and assembly complexity
+  * Faster response time to pressed and key changes
+  * Ability to run more complex lighting animations
+  * Frees up second DB9 to use as a debug port, future expansion (LCD, second switch, etc.)
+* Remove EEPROM socket
+  * Now that we have API keys and a WiFi password, we don't want that easily accessible
+  * ESP32 has built-in encrypted "preferences.h"
+  * These persist through firmware updates as well
+  * Set up to take a JSON document to update parameters via serial (make program to configure?)
+* Route UART0 to DB91, UART1 to DB92
+  * Eliminates the need for UART mux circuitry, allows debug to be read when in use, etc.
+  * Detect what port isn't the switch on startup, and make that the serial output
+* Add a DIP switch to choose board mode
+  * Consolidate the code bases for sign in and machine access
+  * Read the switch on startup to determine the mode of the system
+  * Simplfies code upkeep
+* Make mechanical mounting easier, swap to M3 screws if possible
+* Long-Term Future goals:
+  * Add Ethernet to the box for faster connection
+  * Swap to using our own deployment of an NFC reader on the board directly for ease of manufacturing and reliability
 
 ## USB Adapter
 * RX and TX are flipped, need to correct
-* Add switch to swap 232 RX and TX, so you can communicate to either the Core or the Interface for debugging
+* Swap 232 RX and TX to interface with a Core
 
 ## Interface
 * RS232 RX and TX are flipped
 * Make UPDI test point larger for easier programming
+* Considering retiring - see Core notes above
 
-## New Component: Relay
-* Simple device to act as an APSTA to extend the network
-  * Now that the Core is only a STA and the Gateway is only an AP, need Relay to extend the network
-* ESP32, indicator light, and EEPROM same as Core for getting SSID and password
+## AC Relay
+* Make the system more robust and eliminate the need for wires
+* Use Nema 5-15R receptacles meant for power strips that board mounts
+* Switch to an IEC that is directly board mounted
+* Board-mount a fuse, or better yet a resettable switch-type one
 
 ## New Switch: USB Interruptor
 * Single USB in, USB out
 * Switch fully interrupts not only power but also data
 * Useful for systems without an OS to support hubs, self-powered devices
 * Steals some power from USB
-
-## New Component: Switch Hub
-* Allows for multiple switches to be used at the same time in a system
-* 1 upsteream DB9 to core, 4 (?) downstream ones
-* Power from each diode OR'ed together, consider idea diode controllers?
-* Line driver on hub helps with fan-out on NO signal
-* Address line grounded to indiate hub present
- * This is how I was going to indicate the User Interface, so maybe need alternative solution? 
-
-## New Component: Monitor Panel
-* Allows lab manager to monitor machine states, respond to help requests
-* Acts as a gateway for Cores to connect to internet, database
-* This may be replaced with a Python program instead. 
 
 ## New Component: Remote GPIO
 * Allows machines in a room to send a second, lower-priority command wirelessly to a device
