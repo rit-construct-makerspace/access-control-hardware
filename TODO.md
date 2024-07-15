@@ -18,6 +18,7 @@
 * Route UART0 to DB91, UART1 to DB92
   * Eliminates the need for UART mux circuitry, allows debug to be read when in use, etc.
   * Detect what port isn't the switch on startup, and make that the serial output
+  * Eliminates the need for a programming header, programmer for software updates. 
 * Add a DIP switch to choose board mode
   * Consolidate the code bases for sign in and machine access
   * Read the switch on startup to determine the mode of the system
