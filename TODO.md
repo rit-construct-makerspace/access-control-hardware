@@ -3,29 +3,8 @@
 * Write documentation for all new updates, switches, etc.
 
 ## Core
-* Diode OR 5v and switch power to enable to MT9700, or else they will never enable when power is connected, or when an interface is connected
-* Consider consolidating the interface screw terminals into the main board
-  * Makes for a smaller, tighter integration
-  * Reduces costs and assembly complexity
-  * Faster response time to pressed and key changes
-  * Ability to run more complex lighting animations
-  * Frees up second DB9 to use as a debug port, future expansion (LCD, second switch, etc.)
-* Remove EEPROM socket
-  * Now that we have API keys and a WiFi password, we don't want that easily accessible
-  * ESP32 has built-in encrypted "preferences.h"
-  * These persist through firmware updates as well
-  * Set up to take a JSON document to update parameters via serial (make program to configure?)
-* Route UART0 to DB91, UART1 to DB92
-  * Eliminates the need for UART mux circuitry, allows debug to be read when in use, etc.
-  * Detect what port isn't the switch on startup, and make that the serial output
-  * Eliminates the need for a programming header, programmer for software updates. 
-* Add a DIP switch to choose board mode
-  * Consolidate the code bases for sign in and machine access
-  * Read the switch on startup to determine the mode of the system
-  * Simplfies code upkeep
 * Make mechanical mounting easier, swap to M3 screws if possible
 * Long-Term Future goals:
-  * Add Ethernet to the box for faster connection
   * Swap to using our own deployment of an NFC reader on the board directly for ease of manufacturing and reliability
 
 ## USB Adapter
@@ -40,8 +19,10 @@
 ## AC Relay
 * Make the system more robust and eliminate the need for wires
 * Use Nema 5-15R receptacles meant for power strips that board mounts
+  * TE 3-213598-2 likely choice
 * Switch to an IEC that is directly board mounted
-* Board-mount a fuse, or better yet a resettable switch-type one
+  * Adam Tech has a nice right-angle board-mmount and panel-mount option, need to find PN for that
+* Board-mount a fuse, or better yet a resettable switch-type one found in power strips.
 
 ## New Switch: USB Interruptor
 * Single USB in, USB out
