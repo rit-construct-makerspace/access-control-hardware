@@ -4,6 +4,24 @@ Click on a section to expand it and view changes
 
 <details>
   <summary>Core Main Board</summary>
+
+  ## V2.3.2 - September 2024
+  * Added ethernet to the board - board can be hard-coded to WiFi or ethernet, or swap dynamically.
+  * Added DIP switches for configuring common settings - buzzer volume, board mode, etc.
+  * Replaced EEPROM with internal key:value encrypted storage on ESP32
+  * Added AtTiny to handle frontend (button, LED, key switch) for faster response times, no worry about blocking network communications
+  * Added footprints for integrated UPDI programmer, USB debugger, USB hub for faster development and deployment
+  * Replaced board detection switches with more robust limit switches, makes for more reliable operation
+  * Replaced connections for button and key switch with angled screw blocks for easier integration
+  * Repositioned buzzer for better sound quality
+
+  ## V2.3.1 - August 2024
+  * Major change to board form factor
+  * Internal development model - limited information available.
+  
+  ## V2.2.2 - July 2024
+  * Bugfixes
+  * Internal development model - limited information available.
   
   ## V2.2.1 - June 2024
   * Major overhaul to the design
