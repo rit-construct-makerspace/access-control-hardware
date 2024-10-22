@@ -5,11 +5,8 @@ There's a lot of equipment in a makerspace that can be dangerous to operate with
 
 ### More information can be found on the [GitHub Wiki](https://github.com/rit-construct-makerspace/access-control-hardware/wiki).
 
-## Current Release
-There are no stable versions for release. The latest WIP is Version 2.1
-
 ## Current State
-The access control system is currently being developed to version 2.1.X. 
+All components of the Access Control System have reached a stable and mature release, and are ready for larger deployment testings.
 
 ## TODO
 See TODO.md in root directory. 
