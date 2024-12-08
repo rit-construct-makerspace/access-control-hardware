@@ -3,7 +3,6 @@
 * Write documentation for all new updates, switches, etc.
 
 ## Core
-* Keep track of pink eye bug, seemingly fixed
 * Design case for sign-in reader
 * Fix USB wiring issue on full edition of the board
 * Software:
@@ -16,18 +15,13 @@
   * Write configuration software to eliminate the need for the serial terminal
 
 ## AC Relay
-* Test board, case with new NEMA 5-15R from Qualtek
-* Update case to have mounting for Dual-Lock
+* All set!
 
 ## New Switch: USB Interruptor
 * Single USB in, USB out
 * Switch fully interrupts not only power but also data
 * Useful for systems without an OS to support hubs, self-powered devices
 * Steals some power from USB
-
-## New Component: Bluetooth Trigger
-* Device that can be wirelessly linked to an ACS core, to act as a remote GPIO
-* Developed and intended for automated blast gate control applications, but useful for other tasks like illuminated warning lights
 
 ## New Component: Status Board
 * Simple hardware interface that allows shop managers to see the state of machines in their spaces with illuminated warnings. 
