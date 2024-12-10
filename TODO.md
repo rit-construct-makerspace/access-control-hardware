@@ -5,11 +5,11 @@
 ## Core
 * Design case for sign-in reader
 * Fix USB wiring issue on full edition of the board (only needed if keeping current USB hub design, probably not).
-* Replace current USB implementation with a CP210x, allowing for custom name/ID.
-* Remove DIP Switches?
+* Remove DIP Switches
   * Not very convenient to open and edit, may be easier/better to just edit all in software.
 * Wire speaker to ESP32 DAC pin to allow for Talkie library
 * Replace S2 and AtTiny with S3 (Maybe ESP32-S3-WROOM-1-N16R8), dual-core for simpler programming and consolidated design.
+  * Use the USB stack inside the ESP32, Espressif will give us a PID for this so it can have a custom name. 
 * Software:
   * Develop sign-in reader code
   * Develop Ethernet code
