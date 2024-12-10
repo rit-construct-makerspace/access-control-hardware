@@ -9,6 +9,7 @@
 * Remove DIP Switches?
   * Not very convenient to open and edit, may be easier/better to just edit all in software.
 * Wire speaker to ESP32 DAC pin to allow for Talkie library
+* Replace S2 and AtTiny with ESP32-S3-WROOM-1-N16R8, dual-core for simpler programming and consolidated design.
 * Software:
   * Develop sign-in reader code
   * Develop Ethernet code
