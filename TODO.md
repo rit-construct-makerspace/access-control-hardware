@@ -4,7 +4,8 @@
 
 ## Core
 * Design case for sign-in reader
-* Fix USB wiring issue on full edition of the board
+* Fix USB wiring issue on full edition of the board (only needed if keeping current USB hub design, probably not).
+* Replace current USB implementation with a CP210x, allowing for custom name/ID. 
 * Software:
   * Develop sign-in reader code
   * Develop Ethernet code
