@@ -14,9 +14,6 @@
   * Develop sign-in reader code
   * Develop Ethernet code
   * Implement code to check for proper type of switch connected
-  * Overhaul how key overrides work; system stores a local list of approved users, key switch only works if one of their IDs are present.
-    * Every time an ID is approved, add them to the internal list of 1000 approved UIDs. If list is full, remove the oldest entry.
-    * Every time an ID is not approved, remove it from the list.
 * Long-Term Future goals:
   * Swap to using our own deployment of an NFC reader on the board directly for ease of manufacturing and reliability
   * Write configuration software to eliminate the need for the serial terminal
@@ -30,5 +27,8 @@
 ## New Component: Splitter
 * Simple device that allows multiple downstream devices to connect to the same Core.
 
-## New Component: Status Board
-* Simple hardware interface that allows shop managers to see the state of machines in their spaces with illuminated warnings. 
+## New Component: Logic Connector
+* Allows 2 ACS Cores to control the same system in one of 3 logical combination modes;
+  * OR: Either of the readers can activate the device or keep it online. Good for handing off machine between 2 people.
+  * AND: Both IDs must be present for the system to unlock. Good for complex equipment and enforces a buddy system of trained users.
+  * AND START OR: Both IDs must be present to activate the device, but only one is needed to keep it active. For machines that we want a staff to check 100% of the time before starting, but then students operate.
