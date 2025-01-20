@@ -1,4 +1,4 @@
-#define Version "V232-BE-241017"
+#define Version "V232-BE-250117"
 #define HWVer "V2.3.2-LE"
 
 /*
@@ -30,14 +30,7 @@ The backend is reponsible for managing and reading the NFC reader, gathering dia
 
 */
 
-//TODO:
-  //switch type ID
-  //session time, and session end detection for reporting to server
-  //DIP switch configuration
-  //Sign in code
-  //Ethernet code
-  
-  //This version of the code is stable and featured enough that it can be used.
+//This version of the code is stable and featured enough that it can be used.
 
 //Libraries:
 #include <Adafruit_PN532.h>
@@ -50,9 +43,8 @@ The backend is reponsible for managing and reading the NFC reader, gathering dia
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #include <esp_wifi.h>
-  
-//Settings:
-const unsigned long ADC_MAX = 8192; //Set the maximum read of an ADC pin. ESP32S2 has a 13 bit ADC, so 8192.
+#include "FS.h"
+#include "SPIFFS.h"
 
 //Pin Definitions:
 const int ETHINT = 13;
@@ -113,11 +105,14 @@ int TempLimit; //The temperature above which the system shuts down and sends a w
 int Frequency; //How often an update should be sent
 DeviceAddress TempAddr1, TempAddr2, TempAddr3;
 String EthMAC = ""; //Stores the ethernet MAC
-byte State = 0;
+byte State = 0; //Stores the reported state from frontend
+byte LastState = 0; //Stores the last reported state from frontend
 byte Unlocked = 0;
 bool retry = 0; //Tracks if a message has already been attempted to re-send.
 bool HelpState = 0; //Tracks if help is currently being requested or not.
 String FEVer; //Stores the frontend firmware version, retrieved on startup
+bool validid = 0; //1 if the ID inserted is valid based on the internal list.
+bool SessionEnd = 0; //1 if the session just ended, so the next status update contains the time the machine was on for.
 
 //Prototype Functions for Scheduler:
 void UpdateInterface(); //Reads the current state of the button and switches on the interface, updates accordingly, sends Help and Status change REST API Calls
@@ -209,6 +204,23 @@ void setup() {
   Debug.print(F("Zone: ")); Debug.println(Zone);
   Debug.print(F("Temperature Limit: ")); Debug.println(TempLimit);
   Debug.print(F("Status Report Frequency: ")); Debug.println(Frequency);
+
+  if(!SPIFFS.begin(1)){ //Format SPIFFS if fails
+      Serial.println("SPIFFS Mount Failed");
+      while(1);
+  }
+  if(SPIFFS.exists("/validids.txt")){
+    Debug.println(F("Valid ID List already exists."));
+  } else{
+    Debug.println(F("No Valid ID List file found. Creating..."));
+    File file = SPIFFS.open("/validids.txt", "w");
+    if(!file){
+      Debug.println(F("ERROR: Unable to make file."));
+    }
+    file.print(F("Valid IDs:"));
+    file.println();
+    file.close();
+  }
 
   //Setup pinmodes
   pinMode(DEBUGLED, OUTPUT);
@@ -396,17 +408,24 @@ void CheckSerial(){ //Done?
         AuthRequest();
       break;
       case 'p':
-        //Help button pressed
-        HelpState = incoming.charAt(2)-48;
-        SendStatus("Help");
+        //Card is present
+        ValidateCard();
       break;
       case 's':
         //State
         State = incoming.charAt(2)-48;
+        if(State != LastState){
+          LastState = State;
+          if(State == 0){
+            LastSessionTime = millis() - OnTime;
+          }
+        }
+        ChangeTime = millis();
       break;
       case 'u':
         //Unlocked status
         Unlocked = incoming.charAt(2)-48;
+        ChangeTime = millis();
       break;
       case 'h':
         //Help status
@@ -453,18 +472,43 @@ void AuthRequest(){ //Done?
   if(success){
     Debug.println(F("Found an NFC card!"));
     if(uidLength == 7){
+      CurrentID = "";
       Debug.println(F("ID is proper length."));
       Serial.print(F("UID Value: "));
       for (uint8_t i=0; i < uidLength; i++){
         Debug.print(uid[i], HEX);
         Debug.print(" ");
-      }
-      Debug.println("");
-      Debug.println(F("Sending authentication request to gateway..."));
-      CurrentID = "";
-      for (uint8_t i=0; i < uidLength; i++){
         CurrentID += String(uid[i], HEX);
       }
+      Debug.println("");
+      //WIP: check if ID is valid based on internal list
+      Debug.println(F("Searching for ID in the SPIFFS file"));
+      File file = SPIFFS.open("/validids.txt", "r");
+      if(!file){
+        Debug.println(F("File failed to open!"));
+      }
+      while(file.available()){
+        String tempString = file.readStringUntil('\r');
+        tempString.trim();
+        Debug.print(F("Checking '"));
+        Debug.print(tempString);
+        Debug.println("'");
+        if(CurrentID.equalsIgnoreCase(tempString)){
+          validid = 1;
+          Debug.println("ID Found in Valid List");
+          Internal.println("q");
+          break;
+        } else{
+          validid = 0;
+        }
+      }
+      if(validid == 0){
+        Debug.println("ID Not Found in Valid List.");
+      }
+      file.close();
+
+      //Send auth request
+      Debug.println(F("Sending authentication request to server..."));
       HTTPClient http;
       String ServerPath = Server + "/api/auth?type=" + MachineType + "&machine=" + MachineID + "&zone=" + Zone + "&needswelcome=1&id=" + CurrentID; 
       Debug.print(F("Sending GET to: ")); Debug.println(ServerPath);
@@ -493,11 +537,21 @@ void AuthRequest(){ //Done?
         doc.clear();
         deserializeJson(doc, payload);
         if((doc["UID"] == CurrentID)){
-          //TODO it is possible to quickly swap cards on a slow internet connection and have the system approve the card without re-checking it. Investigate async or interrupt checks for card removal.
+          //follow up; it is possible to quickly swap cards on a slow internet connection and have the system approve the card without re-checking it. Investigate async or interrupt checks for card removal.
           Debug.println(F("UIDs Match!"));
           if(doc["Allowed"] == 1){
             Debug.println(F("Authorization Granted."));
             OnTime = millis();
+            if(validid == 0){
+              Debug.println(F("ID was approved but not in the file. Adding..."));
+              File file = SPIFFS.open("/validids.txt",FILE_APPEND);
+              if(!file.print(CurrentID)){
+               Debug.println(F("ERROR: Unable to write to Valid ID File!")); 
+              }
+              file.println();
+              Internal.println("q");
+              file.close();
+            }
             Internal.println("a");
             SendStatus("SessionStart");
           }
@@ -548,15 +602,14 @@ void SendStatus(String StatusSource = "Scheduled"){ //Done?
   unsigned long SessionTime = 0;
   Debug.print("State: "); Debug.println(State);
   Debug.print("Unlocked: "); Debug.println(Unlocked);
+  SessionTime = millis() - OnTime; //This will always report how long it has been since the machine was last unlocked, so we should only capture it when a session ends.
   if(State == 0){
     //In normal mode
     if(Unlocked){
       doc["State"] = "Active";
-      SessionTime = millis() - OnTime;
       doc["UID"] = CurrentID;
     } else{
       doc["State"] = "Idle";
-      SessionTime = LastSessionTime;
       doc["UID"] = LastID;
     }
   }
@@ -603,5 +656,68 @@ void SendStatus(String StatusSource = "Scheduled"){ //Done?
     }
     Debug.println(F("Failed status twice. Checking server..."));
     CheckForServer();
+  }
+}
+
+void ValidateCard(){
+  //Allows a card to be verified without doing an access check. Only works if the user has put their card into the machine for an auth request before.
+  //First, activate the NFC reader
+  Debug.println(F("Performing non-authentication verification of card against internal records."));
+  byte RetryCardCount = 0;
+  RetryCard:
+  digitalWrite(NFCPWR, HIGH);
+  delay(10);
+  digitalWrite(NFCRST, HIGH);
+  delay(10);
+  nfc.wakeup();
+  nfc.setPassiveActivationRetries(0xFF);
+  boolean success;
+  uint8_t uid[] = { 0, 0, 0, 0, 0, 0, 0, 0 };	// Buffer to store the returned UID
+  uint8_t uidLength;				// Length of the UID (4 or 7 bytes depending on ISO14443A card type)
+  success = nfc.readPassiveTargetID(PN532_MIFARE_ISO14443A, &uid[0], &uidLength,500);
+  if(success){
+    Debug.println(F("Found an NFC card!"));
+    if(uidLength == 7){
+      CurrentID = "";
+      Debug.println(F("ID is proper length."));
+      Serial.print(F("UID Value: "));
+      for (uint8_t i=0; i < uidLength; i++){
+        Debug.print(uid[i], HEX);
+        Debug.print(" ");
+        CurrentID += String(uid[i], HEX);
+      }
+      Debug.println("");
+      //WIP: check if ID is valid based on internal list
+      Debug.println(F("Searching for ID in the SPIFFS file"));
+      File file = SPIFFS.open("/validids.txt", "r");
+      if(!file){
+        Debug.println(F("File failed to open!"));
+      }
+      while(file.available()){
+        String tempString = file.readStringUntil('\r');
+        tempString.trim();
+        Debug.print(F("Checking '"));
+        Debug.print(tempString);
+        Debug.println("'");
+        if(CurrentID.equalsIgnoreCase(tempString)){
+          validid = 1;
+          Debug.println("ID Found in Valid List");
+          Internal.println("q");
+          break;
+        } else{
+          validid = 0;
+        }
+      }
+      if(validid == 0){
+        Debug.println("ID Not Found in Valid List.");
+      }
+      file.close();
+    }
+  } else{
+    RetryCardCount++;
+    if(RetryCardCount <= 5){
+      delay(50);
+      goto RetryCard;
+    }
   }
 }

@@ -1,4 +1,4 @@
-#define Version "V232-FE-241017"
+#define Version "V232-FE-250117"
 
 /* 
 
@@ -30,9 +30,7 @@ The backend is reponsible for managing and reading the NFC reader, gathering dia
 */
 
 //TODO:
-  //Pink eye bug seemingly fixed, need to keep an eye on that though
   //Minor bug that you can get the lights to go yellow by inserting and removing a card during startup
-  //Bugs considered minor enough that it is OK to use this code. 
 
 //Pin Definitions:
 #define UART_MODE PIN_PA4
@@ -115,6 +113,8 @@ bool NoBuzzer = 0;
   //If 1, the buzzer is not working.
 bool Starting = 1;
   //Set to 0 when startup is done, to indicate to start functioning normally.
+bool isvalid = 0;
+  //1 when a valid ID card is present, for key switch stuff
 
 //Objects:
 Scheduler scheduler;
@@ -137,7 +137,6 @@ void setup() {
   // put your setup code here, to run once:
   //Check the state of UART_MODE. If LOW, route UART properly and disable debug mode.
   if(digitalRead(UART_MODE)){
-    debug = 0;
     Serial.swap(1);
   }
   if(digitalRead(DIP5)){
@@ -206,95 +205,40 @@ void loop() {
     LEDAnimation = 7;
   }
 
-  //Safety catch to prevent pink eye bug - if button is not pressed, force out of the purple LED animation
-  if(LEDAnimation == 10 && !digitalRead(BUTTON)){
-    ResetLED();
-    UpdateLED();
-  }
-
-  //Read the state of the help button, see if it is different than before.
-  bool NowButton = digitalRead(BUTTON);
-  if(NowButton != OldButton){
+  //Read the state of the key switches, but only if there is a valid ID present
+  if((OldKey1 != digitalRead(KEY1)) || (OldKey2 != digitalRead(KEY2))){
+    //One of the key switch pins is the not in the right state. Something must have changed. 
     if(debug){
-      Serial.println(F("Button state changed."));
+      Serial.println(F("Change to key switch detected."));
     }
-    OldButton = NowButton;
-    if(NowButton == 1){
-      //Log the current state of the override when the button is pressed.
-      OldState = State;
-      NewState = State;
-      //Reset the values for the key switch;
-      OldKey1 = digitalRead(KEY1);
-      OldKey2 = digitalRead(KEY2);
-      //Set the LED solid purple;
-      LEDAnimation = 10;
-      UpdateLED();
-    }
-    else{
-      //Button was released
-      //Actions are only taken when the button was released, pressing the button doesn't matter
-      if(OldState != NewState){
-        //The key switch must have been moved into a new state, apply the new state
-        State = NewState;
-        //Inform the ESP32 that the state changed
-        Serial.print(F("s,")); Serial.println(State);
-        //Set the LEDs to match the state;
-        ResetLED();
-        //Make sure that the access switch is in the proper state;
-        SetAccess();
-      }
-      else if(IsConnected){
-        //If the state didn't change, this must be a normal request for help.
-        ///We only process these when the server is connected though.
-        if(!Help){
-          Help = 1;
-          LEDAnimation = 7; //Blinking blue
-        } else{
-          Help = 0;
-          ResetLED();
-        }
-        Serial.print(F("p,")); Serial.println(Help);
-      }
-    }
-  }
-
-  //Read the state of the key switches, but only if the button is currently pressed.
-  if(digitalRead(BUTTON)){
-    if((OldKey1 != digitalRead(KEY1)) || (OldKey2 != digitalRead(KEY2))){
-      //One of the key switch pins is the not in the right state. Something must have changed. 
-      if(debug){
-        Serial.println(F("Change to key switch detected."));
-      }
-      OldKey1 = digitalRead(KEY1);
-      OldKey2 = digitalRead(KEY2);
-
-      //Determine what the new state is, set the NewState variable
-      if((digitalRead(KEY1)) && (digitalRead(KEY2))){
-        //Locked on
-        NewState = 1;
-      }
-      if(!digitalRead(KEY1)){
-        //Locked off
-        NewState = 2;
-      }
-      if(!digitalRead(KEY2)){
-        //Normal mode
-        NewState = 0;
-      }
-      if(debug){
-        Serial.print(F("New State Detected: ")); Serial.println(NewState);
-      }
-    }
-  } else{
-    //If the buttons was not pressed, set the old key switch states
     OldKey1 = digitalRead(KEY1);
     OldKey2 = digitalRead(KEY2);
-  }
+
+    //Determine what the new state is, set the NewState variable
+    if((digitalRead(KEY1)) && (digitalRead(KEY2)) && isvalid){
+      //Locked on, can only enter this state if there is a valid card present.
+      NewState = 1;
+    }
+    if(!digitalRead(KEY1)){
+      //Locked off
+      NewState = 2;
+    }
+    if(!digitalRead(KEY2) && isvalid){
+      //Normal mode, can only enter if there is a valid card present.
+      NewState = 0;
+    }
+    State = NewState;
+    SetAccess();
+    if(debug){
+      Serial.print(F("State Set: ")); Serial.println(NewState);
+    }
+  } 
 
   //Check for a key card with switches
   bool CardCheck = (!digitalRead(SWITCH1) && !digitalRead(SWITCH2));
   if(CardCheck != CardPresent){
     //The state is different than last loop, let's see what's up
+    CardPresent = CardCheck;
     if(CardCheck == 1){
       if(debug){
         Serial.println(F("New Card Detected."));
@@ -302,37 +246,22 @@ void loop() {
 
       if(State == 0 && IsConnected == 1){
         //Authenticate the card, since we are idle and not offline
+        CardPresent = 1;
         Serial.println(F("a"));
         LEDAnimation = 8; //Blinking yellow
-        CardPresent = 1;
       }
       else{
-        //If not in the right state and a card is inserted, buzz a warning/error message.
+        //If not in the right state and a card is inserted, buzz a warning/error message. But still tell the backend there is a card present
+        Serial.println(F("p"));
         BuzzerSequence = 2;
       }
     }
     if(CardCheck == 0){
       //A card was removed
-      if (GracePeriod == 0){
-        //The card was just removed
-        if(debug){
-          Serial.println(F("Card Removed..."));
-        }
-        GracePeriod = 1;
-        GraceTime = millis() + 50;
-      }
-      else{
-        if(millis() >= GraceTime){
-          //Gracetime expired and the card was not re-inserted
-          GracePeriod = 0;
-          CardPresent = 0;
-          Unlocked = 0;
-          if(debug){
-            Serial.println(F("Grace Period Expired."));
-          }
-          SetAccess();
-        }
-      }
+      CardPresent = 0;
+      isvalid = 0;
+      Unlocked = 0;
+      SetAccess();
     }
   }
 
@@ -348,6 +277,12 @@ void loop() {
     }
     //Process the message;
     switch (incoming.charAt(0)){
+      case 'q':
+        //valid ID card found
+        if(CardPresent){
+          isvalid = 1;
+        }
+      break;
       case 'a':
         //Authorization Granted
         if(State == 0 && CardPresent == 1){
@@ -432,12 +367,9 @@ void loop() {
             //Normal mode
             NewState = 0;
           }
-          if(debug){
-            Serial.print(F("New State Detected: ")); Serial.println(NewState);
-          }
           State = NewState;
           if(debug){
-            Serial.println(F("New state applied."));
+            Serial.print(F("New State Set: ")); Serial.println(State);
           }
         }
         SetAccess();
