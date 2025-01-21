@@ -14,10 +14,10 @@ Documentation: https://github.com/rit-construct-makerspace/access-control-hardwa
 
 This firmware is intended to run on the 8 bit microcontroller handling the frontend of the Access Control Core. 
 
-Theory of Operation:
+Theory of Operation: n 
 V2.3.2 of the Access Control core implemented many improvements discovered in testing previous iterations. One of these changes that manifested
 was dividing the Core's duties into a lightweight frontend system, and a blocking, slower backend system. These two would then communicate over
-UART to work in unison, with the frontend serving the role of master when needed. 
+UART to work in unison, with the frontend serving the role of master when needed.  
 
 The frontend handles anything and everything that someone physically standing in front of the machine can perceive. This focus allows an increase
 in responsiveness, and will lead to a better user experience. Blocking, long-duration tasks (like sending HTTPS messages) is left to the backend.
@@ -261,6 +261,7 @@ void loop() {
       CardPresent = 0;
       isvalid = 0;
       Unlocked = 0;
+      Serial.println("r");
       SetAccess();
     }
   }

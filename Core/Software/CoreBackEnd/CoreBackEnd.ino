@@ -113,6 +113,7 @@ bool HelpState = 0; //Tracks if help is currently being requested or not.
 String FEVer; //Stores the frontend firmware version, retrieved on startup
 bool validid = 0; //1 if the ID inserted is valid based on the internal list.
 bool SessionEnd = 0; //1 if the session just ended, so the next status update contains the time the machine was on for.
+unsigned long LastTime = 0;// Tracks how long the last session was
 
 //Prototype Functions for Scheduler:
 void UpdateInterface(); //Reads the current state of the button and switches on the interface, updates accordingly, sends Help and Status change REST API Calls
@@ -149,7 +150,7 @@ void setup() {
   Debug.begin(115200);
 
   Debug.println(F("Debug Mode Enabled!"));
-
+ 
   Debug.println(F("Waiting 5 seconds to see if there are config values to load."));
   Debug.println(F("update?"));
   settings.begin("settings", false);
@@ -403,6 +404,12 @@ void CheckSerial(){ //Done?
     Debug.println(incoming);
     //Process the message;
     switch (incoming.charAt(0)){
+      case 'r':
+        //Card was removed
+        LastTime = millis() - OnTime;
+        SendStatus("Card Removed");
+        validid = 0;
+        CurrentID = "N/A";
       case 'a':
         //Authentication request
         AuthRequest();
@@ -416,9 +423,7 @@ void CheckSerial(){ //Done?
         State = incoming.charAt(2)-48;
         if(State != LastState){
           LastState = State;
-          if(State == 0){
-            LastSessionTime = millis() - OnTime;
-          }
+          SendStatus("State Change");
         }
         ChangeTime = millis();
       break;
@@ -602,28 +607,29 @@ void SendStatus(String StatusSource = "Scheduled"){ //Done?
   unsigned long SessionTime = 0;
   Debug.print("State: "); Debug.println(State);
   Debug.print("Unlocked: "); Debug.println(Unlocked);
-  SessionTime = millis() - OnTime; //This will always report how long it has been since the machine was last unlocked, so we should only capture it when a session ends.
   if(State == 0){
     //In normal mode
     if(Unlocked){
       doc["State"] = "Active";
       doc["UID"] = CurrentID;
+      SessionTime = millis() - OnTime;
     } else{
       doc["State"] = "Idle";
-      doc["UID"] = LastID;
+      doc["UID"] = CurrentID;
+      SessionTime = LastTime;
     }
   }
   if(State == 1){
     //Locked on
     doc["State"] = "AlwaysOn";
-    SessionTime = millis() - ChangeTime;
-    doc["UID"] = LastID;
+    SessionTime = 0;
+    doc["UID"] = CurrentID;
   }
   if(State == 2){
     //Locked off
     doc["State"] = "Lockout";
-    SessionTime = millis() - ChangeTime;
-    doc["UID"] = LastID;
+    SessionTime = 0;
+    doc["UID"] = CurrentID;
   }
   doc["Time"] = String(SessionTime / 1000);
   doc["Source"] = StatusSource;
