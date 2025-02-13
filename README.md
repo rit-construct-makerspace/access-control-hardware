@@ -9,10 +9,10 @@ There's a lot of equipment in a makerspace that can be dangerous to operate with
 All components of the Access Control System have reached a stable and mature release, and are ready for larger deployment testings.
 
 ## TODO
-See TODO.md in root directory. 
+See Todo section on each specific component's wiki page.
 
 ## CHANGELOG
-See Changelog on each specific component's wiki page
+See Changelog on each specific component's wiki page.
 
 ## Instructions & Further Documentation
 [See the wiki on GitHub!](https://github.com/rit-construct-makerspace/access-control-hardware/wiki) 
