@@ -5,14 +5,10 @@ There's a lot of equipment in a makerspace that can be dangerous to operate with
 
 ### More information can be found on the [GitHub Wiki](https://github.com/rit-construct-makerspace/access-control-hardware/wiki).
 
+### Firmware documented in a seperate repository; [access-control-firmware](https://github.com/rit-construct-makerspace/access-control-firmware).
+
 ## Current State
-All components of the Access Control System have reached a stable and mature release, and are ready for larger deployment testings.
-
-## TODO
-See Todo section on each specific component's wiki page.
-
-## CHANGELOG
-See Changelog on each specific component's wiki page.
+All components of the Access Control System have reached a stable and mature release, and are ready undergoing large-scale deployment testing across all 3 of our makerspaces.
 
 ## Instructions & Further Documentation
 [See the wiki on GitHub!](https://github.com/rit-construct-makerspace/access-control-hardware/wiki) 
@@ -23,4 +19,4 @@ Coming Soon!
 ## License
 This project is licensed under the Creative Commons 4.0 Attribution-NonCommercial-ShareAlike. For more information, click [here](https://creativecommons.org/licenses/by-nc-sa/4.0/).
 
-If you are interested in using this project under a different license (e.g. for commercial use), please contact me. 
+If you are interested in using this project under a different license (e.g. for commercial use), please contact us. 
