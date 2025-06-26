@@ -17,6 +17,4 @@ All components of the Access Control System have reached a stable and mature rel
 Coming Soon!
 
 ## License
-This project is licensed under the Creative Commons 4.0 Attribution-NonCommercial-ShareAlike. For more information, click [here](https://creativecommons.org/licenses/by-nc-sa/4.0/).
-
-If you are interested in using this project under a different license (e.g. for commercial use), please contact us. 
+This project is licensed under the CERN-OHL-S License. See LIECENSE.txt for more information.
