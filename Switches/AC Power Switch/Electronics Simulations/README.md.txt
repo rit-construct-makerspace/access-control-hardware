@@ -1,0 +1,1 @@
+These files are meant to be opened in Falstad Circuit Simulator. See https://www.falstad.com/circuit/ for more information.
