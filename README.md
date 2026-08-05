@@ -1,5 +1,7 @@
 # Makerspace Access Control System
 
+## NOTICE: This repository has been retired, anything related to V3.X hardware and beyond can be found at https://github.com/makeacs
+
 ## Summary
 There's a lot of equipment in a makerspace that can be dangerous to operate without proper training. To make sure only trained personnel are accessing equipment at the RIT SHED Makerspace, an access control system was developed. This system works off of student/faculty/staff NFC ID cards, and checks a central database (automatically updated by training programs) to ensure users are trained to use the machine they are trying to access. A number of different switching mechanisms are developed, to allow maximum flexibility in integration with a wide array of machines. 
 
