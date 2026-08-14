@@ -1,1 +1,4 @@
 [0127/175300.293:ERROR:gpu\ipc\client\command_buffer_proxy_impl.cc:327] GPU state invalid after WaitForGetOffsetInRange.
+[0810/204753.772:ERROR:ui\gl\direct_composition_support.cc:612] AMD VideoProcessorGetOutputExtension failed: The parameter is incorrect. (0x80070057)
+[0812/203136.014:ERROR:ui\gl\direct_composition_support.cc:612] AMD VideoProcessorGetOutputExtension failed: The parameter is incorrect. (0x80070057)
+[0814/192430.985:ERROR:ui\gl\direct_composition_support.cc:612] AMD VideoProcessorGetOutputExtension failed: The parameter is incorrect. (0x80070057)
