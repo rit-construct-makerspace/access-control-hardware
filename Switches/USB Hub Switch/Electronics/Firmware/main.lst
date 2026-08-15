@@ -86,153 +86,159 @@
                                      86 ; code
                                      87 ;--------------------------------------------------------
                                      88 	.area CODE
-                                     89 ;	main.c: 22: void update_shift_register(uint8_t data) {
+                                     89 ;	main.c: 23: void update_shift_register(uint8_t data) {
                                      90 ;	-----------------------------------------
                                      91 ;	 function update_shift_register
                                      92 ;	-----------------------------------------
       000000                         93 _update_shift_register:
       000000 88               [ 1]   94 	push	a
-                                     95 ;	main.c: 24: for (uint8_t i = 0; i < 8; i++) {
+                                     95 ;	main.c: 25: for (uint8_t i = 0; i < 8; i++) {
       000001 5F               [ 1]   96 	clrw	x
       000002                         97 00106$:
-                                     98 ;	main.c: 27: PC_ODR |= (1 << DATA_PIN);  
+                                     98 ;	main.c: 28: PC_ODR |= (1 << DATA_PIN);  
       000002 C6 50 0A         [ 1]   99 	ld	a, 0x500a
-                                    100 ;	main.c: 24: for (uint8_t i = 0; i < 8; i++) {
+                                    100 ;	main.c: 25: for (uint8_t i = 0; i < 8; i++) {
       000005 88               [ 1]  101 	push	a
       000006 9F               [ 1]  102 	ld	a, xl
       000007 A1 08            [ 1]  103 	cp	a, #0x08
       000009 84               [ 1]  104 	pop	a
       00000A 24 25            [ 1]  105 	jrnc	00104$
-                                    106 ;	main.c: 26: if (data & 0x80) {
+                                    106 ;	main.c: 27: if (data & 0x80) {
       00000C 0D 01            [ 1]  107 	tnz	(0x01, sp)
       00000E 2A 07            [ 1]  108 	jrpl	00102$
-                                    109 ;	main.c: 27: PC_ODR |= (1 << DATA_PIN);  
+                                    109 ;	main.c: 28: PC_ODR |= (1 << DATA_PIN);  
       000010 AA 40            [ 1]  110 	or	a, #0x40
       000012 C7 50 0A         [ 1]  111 	ld	0x500a, a
       000015 20 05            [ 2]  112 	jra	00103$
       000017                        113 00102$:
-                                    114 ;	main.c: 29: PC_ODR &= ~(1 << DATA_PIN); 
+                                    114 ;	main.c: 30: PC_ODR &= ~(1 << DATA_PIN); 
       000017 A4 BF            [ 1]  115 	and	a, #0xbf
       000019 C7 50 0A         [ 1]  116 	ld	0x500a, a
       00001C                        117 00103$:
-                                    118 ;	main.c: 32: PC_ODR |= (1 << CLK_PIN);   // Clock HIGH
+                                    118 ;	main.c: 33: PC_ODR |= (1 << CLK_PIN);   // Clock HIGH
       00001C C6 50 0A         [ 1]  119 	ld	a, 0x500a
       00001F AA 80            [ 1]  120 	or	a, #0x80
       000021 C7 50 0A         [ 1]  121 	ld	0x500a, a
-                                    122 ;	main.c: 33: PC_ODR &= ~(1 << CLK_PIN);  // Clock LOW
+                                    122 ;	main.c: 34: PC_ODR &= ~(1 << CLK_PIN);  // Clock LOW
       000024 C6 50 0A         [ 1]  123 	ld	a, 0x500a
       000027 A4 7F            [ 1]  124 	and	a, #0x7f
       000029 C7 50 0A         [ 1]  125 	ld	0x500a, a
-                                    126 ;	main.c: 35: data <<= 1; 
+                                    126 ;	main.c: 36: data <<= 1; 
       00002C 08 01            [ 1]  127 	sll	(0x01, sp)
-                                    128 ;	main.c: 24: for (uint8_t i = 0; i < 8; i++) {
+                                    128 ;	main.c: 25: for (uint8_t i = 0; i < 8; i++) {
       00002E 5C               [ 1]  129 	incw	x
       00002F 20 D1            [ 2]  130 	jra	00106$
       000031                        131 00104$:
-                                    132 ;	main.c: 38: PC_ODR |= (1 << STORE_PIN);  // Store HIGH
+                                    132 ;	main.c: 39: PC_ODR |= (1 << STORE_PIN);  // Store HIGH
       000031 AA 20            [ 1]  133 	or	a, #0x20
       000033 C7 50 0A         [ 1]  134 	ld	0x500a, a
-                                    135 ;	main.c: 39: PC_ODR &= ~(1 << STORE_PIN); // Store LOW
+                                    135 ;	main.c: 40: PC_ODR &= ~(1 << STORE_PIN); // Store LOW
       000036 72 1B 50 0A      [ 1]  136 	bres	0x500a, #5
-                                    137 ;	main.c: 40: }
+                                    137 ;	main.c: 41: }
       00003A 84               [ 1]  138 	pop	a
       00003B 81               [ 4]  139 	ret
-                                    140 ;	main.c: 42: int main(void) {
+                                    140 ;	main.c: 43: int main(void) {
                                     141 ;	-----------------------------------------
                                     142 ;	 function main
                                     143 ;	-----------------------------------------
       00003C                        144 _main:
       00003C 52 05            [ 2]  145 	sub	sp, #5
-                                    146 ;	main.c: 46: PB_DDR |= (1 << CONFIG_PIN); 
-      00003E 72 18 50 07      [ 1]  147 	bset	0x5007, #4
-                                    148 ;	main.c: 47: PB_CR1 |= (1 << CONFIG_PIN); // Push-pull
-      000042 72 18 50 08      [ 1]  149 	bset	0x5008, #4
-                                    150 ;	main.c: 48: PB_ODR &= ~(1 << CONFIG_PIN); // Drive it LOW (stays here forever)
-      000046 72 19 50 05      [ 1]  151 	bres	0x5005, #4
-                                    152 ;	main.c: 51: PC_DDR &= ~(1 << ACCESS_PIN); 
-      00004A 72 17 50 0C      [ 1]  153 	bres	0x500c, #3
-                                    154 ;	main.c: 52: PC_CR1 |= (1 << ACCESS_PIN);  
-      00004E 72 16 50 0D      [ 1]  155 	bset	0x500d, #3
-                                    156 ;	main.c: 55: PC_DDR |= (1 << CLK_PIN) | (1 << DATA_PIN) | (1 << STORE_PIN); 
-      000052 C6 50 0C         [ 1]  157 	ld	a, 0x500c
-      000055 AA E0            [ 1]  158 	or	a, #0xe0
-      000057 C7 50 0C         [ 1]  159 	ld	0x500c, a
-                                    160 ;	main.c: 56: PC_CR1 |= (1 << CLK_PIN) | (1 << DATA_PIN) | (1 << STORE_PIN); 
-      00005A C6 50 0D         [ 1]  161 	ld	a, 0x500d
-      00005D AA E0            [ 1]  162 	or	a, #0xe0
-      00005F C7 50 0D         [ 1]  163 	ld	0x500d, a
-                                    164 ;	main.c: 59: PC_ODR &= ~((1 << CLK_PIN) | (1 << DATA_PIN) | (1 << STORE_PIN));
-      000062 C6 50 0A         [ 1]  165 	ld	a, 0x500a
-      000065 A4 1F            [ 1]  166 	and	a, #0x1f
-      000067 C7 50 0A         [ 1]  167 	ld	0x500a, a
-                                    168 ;	main.c: 62: update_shift_register(0xFF);
-      00006A A6 FF            [ 1]  169 	ld	a, #0xff
-      00006C CDr00r00         [ 4]  170 	call	_update_shift_register
-                                    171 ;	main.c: 65: uint8_t current_state = (PC_IDR & (1 << ACCESS_PIN)) ? 1 : 0;
-      00006F 72 07 50 0B 03   [ 2]  172 	btjf	0x500b, #3, 00117$
-      000074 A6 01            [ 1]  173 	ld	a, #0x01
-      000076 21                     174 	.byte 0x21
-      000077                        175 00117$:
-      000077 4F               [ 1]  176 	clr	a
-      000078                        177 00118$:
-      000078 6B 03            [ 1]  178 	ld	(0x03, sp), a
-                                    179 ;	main.c: 70: while(1) {
-      00007A                        180 00110$:
-                                    181 ;	main.c: 72: current_state = (PC_IDR & (1 << ACCESS_PIN)) ? 1 : 0;
-      00007A 72 07 50 0B 03   [ 2]  182 	btjf	0x500b, #3, 00119$
-      00007F A6 01            [ 1]  183 	ld	a, #0x01
-      000081 21                     184 	.byte 0x21
-      000082                        185 00119$:
-      000082 4F               [ 1]  186 	clr	a
-      000083                        187 00120$:
-                                    188 ;	main.c: 75: if (current_state != last_state) {
-      000083 6B 04            [ 1]  189 	ld	(0x04, sp), a
-      000085 11 03            [ 1]  190 	cp	a, (0x03, sp)
-      000087 27 F1            [ 1]  191 	jreq	00110$
-                                    192 ;	main.c: 78: for(volatile uint16_t i = 0; i < 2000; i++); 
-      000089 5F               [ 1]  193 	clrw	x
-      00008A 1F 01            [ 2]  194 	ldw	(0x01, sp), x
-      00008C                        195 00113$:
-      00008C 1E 01            [ 2]  196 	ldw	x, (0x01, sp)
-      00008E A3 07 D0         [ 2]  197 	cpw	x, #0x07d0
-      000091 24 07            [ 1]  198 	jrnc	00101$
-      000093 1E 01            [ 2]  199 	ldw	x, (0x01, sp)
-      000095 5C               [ 1]  200 	incw	x
-      000096 1F 01            [ 2]  201 	ldw	(0x01, sp), x
-      000098 20 F2            [ 2]  202 	jra	00113$
-      00009A                        203 00101$:
-                                    204 ;	main.c: 81: if (((PC_IDR & (1 << ACCESS_PIN)) ? 1 : 0) == current_state) {
-      00009A 72 07 50 0B 05   [ 2]  205 	btjf	0x500b, #3, 00121$
-      00009F A6 01            [ 1]  206 	ld	a, #0x01
-      0000A1 6B 05            [ 1]  207 	ld	(0x05, sp), a
-      0000A3 C5                     208 	.byte 0xc5
-      0000A4                        209 00121$:
-      0000A4 0F 05            [ 1]  210 	clr	(0x05, sp)
-      0000A6                        211 00122$:
-      0000A6 7B 04            [ 1]  212 	ld	a, (0x04, sp)
-      0000A8 11 05            [ 1]  213 	cp	a, (0x05, sp)
-      0000AA 26 CE            [ 1]  214 	jrne	00110$
-                                    215 ;	main.c: 83: if (current_state == 1) {
-      0000AC 7B 04            [ 1]  216 	ld	a, (0x04, sp)
-      0000AE 4A               [ 1]  217 	dec	a
-      0000AF 26 07            [ 1]  218 	jrne	00103$
-                                    219 ;	main.c: 85: update_shift_register(0xC0); // 0xC0 = 1100 0000
-      0000B1 A6 C0            [ 1]  220 	ld	a, #0xc0
-      0000B3 CDr00r00         [ 4]  221 	call	_update_shift_register
-      0000B6 20 05            [ 2]  222 	jra	00104$
-      0000B8                        223 00103$:
-                                    224 ;	main.c: 88: update_shift_register(0x3F); // 0x3F = 0011 1111
-      0000B8 A6 3F            [ 1]  225 	ld	a, #0x3f
-      0000BA CDr00r00         [ 4]  226 	call	_update_shift_register
-      0000BD                        227 00104$:
-                                    228 ;	main.c: 92: last_state = current_state; 
-      0000BD 7B 04            [ 1]  229 	ld	a, (0x04, sp)
-      0000BF 6B 03            [ 1]  230 	ld	(0x03, sp), a
-      0000C1 20 B7            [ 2]  231 	jra	00110$
-                                    232 ;	main.c: 96: }
-      0000C3 5B 05            [ 2]  233 	addw	sp, #5
-      0000C5 81               [ 4]  234 	ret
-                                    235 	.area CODE
-                                    236 	.area CONST
-                                    237 	.area INITIALIZER
-                                    238 	.area CABS (ABS)
+                                    146 ;	main.c: 47: PB_DDR |= (1 << CONFIG_PIN1) | (1 << CONFIG_PIN2); 
+      00003E C6 50 07         [ 1]  147 	ld	a, 0x5007
+      000041 AA 30            [ 1]  148 	or	a, #0x30
+      000043 C7 50 07         [ 1]  149 	ld	0x5007, a
+                                    150 ;	main.c: 48: PB_CR1 |= (1 << CONFIG_PIN1) | (1 << CONFIG_PIN2); // Push-pull
+      000046 C6 50 08         [ 1]  151 	ld	a, 0x5008
+      000049 AA 30            [ 1]  152 	or	a, #0x30
+      00004B C7 50 08         [ 1]  153 	ld	0x5008, a
+                                    154 ;	main.c: 49: PB_ODR &= ~((1 << CONFIG_PIN1) | (1 << CONFIG_PIN2)); // Drive them LOW (stays here forever)
+      00004E C6 50 05         [ 1]  155 	ld	a, 0x5005
+      000051 A4 CF            [ 1]  156 	and	a, #0xcf
+      000053 C7 50 05         [ 1]  157 	ld	0x5005, a
+                                    158 ;	main.c: 52: PC_DDR &= ~(1 << ACCESS_PIN); 
+      000056 72 17 50 0C      [ 1]  159 	bres	0x500c, #3
+                                    160 ;	main.c: 53: PC_CR1 |= (1 << ACCESS_PIN);  
+      00005A 72 16 50 0D      [ 1]  161 	bset	0x500d, #3
+                                    162 ;	main.c: 56: PC_DDR |= (1 << CLK_PIN) | (1 << DATA_PIN) | (1 << STORE_PIN); 
+      00005E C6 50 0C         [ 1]  163 	ld	a, 0x500c
+      000061 AA E0            [ 1]  164 	or	a, #0xe0
+      000063 C7 50 0C         [ 1]  165 	ld	0x500c, a
+                                    166 ;	main.c: 57: PC_CR1 |= (1 << CLK_PIN) | (1 << DATA_PIN) | (1 << STORE_PIN); 
+      000066 C6 50 0D         [ 1]  167 	ld	a, 0x500d
+      000069 AA E0            [ 1]  168 	or	a, #0xe0
+      00006B C7 50 0D         [ 1]  169 	ld	0x500d, a
+                                    170 ;	main.c: 60: PC_ODR &= ~((1 << CLK_PIN) | (1 << DATA_PIN) | (1 << STORE_PIN));
+      00006E C6 50 0A         [ 1]  171 	ld	a, 0x500a
+      000071 A4 1F            [ 1]  172 	and	a, #0x1f
+      000073 C7 50 0A         [ 1]  173 	ld	0x500a, a
+                                    174 ;	main.c: 63: update_shift_register(0xFF);
+      000076 A6 FF            [ 1]  175 	ld	a, #0xff
+      000078 CDr00r00         [ 4]  176 	call	_update_shift_register
+                                    177 ;	main.c: 66: uint8_t current_state = (PC_IDR & (1 << ACCESS_PIN)) ? 1 : 0;
+      00007B 72 07 50 0B 03   [ 2]  178 	btjf	0x500b, #3, 00117$
+      000080 A6 01            [ 1]  179 	ld	a, #0x01
+      000082 21                     180 	.byte 0x21
+      000083                        181 00117$:
+      000083 4F               [ 1]  182 	clr	a
+      000084                        183 00118$:
+      000084 6B 03            [ 1]  184 	ld	(0x03, sp), a
+                                    185 ;	main.c: 71: while(1) {
+      000086                        186 00110$:
+                                    187 ;	main.c: 73: current_state = (PC_IDR & (1 << ACCESS_PIN)) ? 1 : 0;
+      000086 72 07 50 0B 03   [ 2]  188 	btjf	0x500b, #3, 00119$
+      00008B A6 01            [ 1]  189 	ld	a, #0x01
+      00008D 21                     190 	.byte 0x21
+      00008E                        191 00119$:
+      00008E 4F               [ 1]  192 	clr	a
+      00008F                        193 00120$:
+                                    194 ;	main.c: 76: if (current_state != last_state) {
+      00008F 6B 04            [ 1]  195 	ld	(0x04, sp), a
+      000091 11 03            [ 1]  196 	cp	a, (0x03, sp)
+      000093 27 F1            [ 1]  197 	jreq	00110$
+                                    198 ;	main.c: 79: for(volatile uint16_t i = 0; i < 2000; i++); 
+      000095 5F               [ 1]  199 	clrw	x
+      000096 1F 01            [ 2]  200 	ldw	(0x01, sp), x
+      000098                        201 00113$:
+      000098 1E 01            [ 2]  202 	ldw	x, (0x01, sp)
+      00009A A3 07 D0         [ 2]  203 	cpw	x, #0x07d0
+      00009D 24 07            [ 1]  204 	jrnc	00101$
+      00009F 1E 01            [ 2]  205 	ldw	x, (0x01, sp)
+      0000A1 5C               [ 1]  206 	incw	x
+      0000A2 1F 01            [ 2]  207 	ldw	(0x01, sp), x
+      0000A4 20 F2            [ 2]  208 	jra	00113$
+      0000A6                        209 00101$:
+                                    210 ;	main.c: 82: if (((PC_IDR & (1 << ACCESS_PIN)) ? 1 : 0) == current_state) {
+      0000A6 72 07 50 0B 05   [ 2]  211 	btjf	0x500b, #3, 00121$
+      0000AB A6 01            [ 1]  212 	ld	a, #0x01
+      0000AD 6B 05            [ 1]  213 	ld	(0x05, sp), a
+      0000AF C5                     214 	.byte 0xc5
+      0000B0                        215 00121$:
+      0000B0 0F 05            [ 1]  216 	clr	(0x05, sp)
+      0000B2                        217 00122$:
+      0000B2 7B 04            [ 1]  218 	ld	a, (0x04, sp)
+      0000B4 11 05            [ 1]  219 	cp	a, (0x05, sp)
+      0000B6 26 CE            [ 1]  220 	jrne	00110$
+                                    221 ;	main.c: 84: if (current_state == 1) {
+      0000B8 7B 04            [ 1]  222 	ld	a, (0x04, sp)
+      0000BA 4A               [ 1]  223 	dec	a
+      0000BB 26 07            [ 1]  224 	jrne	00103$
+                                    225 ;	main.c: 86: update_shift_register(0xC0); // 0xC0 = 1100 0000
+      0000BD A6 C0            [ 1]  226 	ld	a, #0xc0
+      0000BF CDr00r00         [ 4]  227 	call	_update_shift_register
+      0000C2 20 05            [ 2]  228 	jra	00104$
+      0000C4                        229 00103$:
+                                    230 ;	main.c: 89: update_shift_register(0x3F); // 0x3F = 0011 1111
+      0000C4 A6 3F            [ 1]  231 	ld	a, #0x3f
+      0000C6 CDr00r00         [ 4]  232 	call	_update_shift_register
+      0000C9                        233 00104$:
+                                    234 ;	main.c: 93: last_state = current_state; 
+      0000C9 7B 04            [ 1]  235 	ld	a, (0x04, sp)
+      0000CB 6B 03            [ 1]  236 	ld	(0x03, sp), a
+      0000CD 20 B7            [ 2]  237 	jra	00110$
+                                    238 ;	main.c: 97: }
+      0000CF 5B 05            [ 2]  239 	addw	sp, #5
+      0000D1 81               [ 4]  240 	ret
+                                    241 	.area CODE
+                                    242 	.area CONST
+                                    243 	.area INITIALIZER
+                                    244 	.area CABS (ABS)

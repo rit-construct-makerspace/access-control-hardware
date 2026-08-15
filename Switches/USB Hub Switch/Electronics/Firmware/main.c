@@ -1,6 +1,6 @@
 #include <stdint.h>
 
-// Port B Registers (For PB4 Configuration Pin)
+// Port B Registers (For Configuration Pins)
 #define PB_ODR *(volatile uint8_t *)0x5005 
 #define PB_DDR *(volatile uint8_t *)0x5007 
 #define PB_CR1 *(volatile uint8_t *)0x5008 
@@ -11,12 +11,13 @@
 #define PC_DDR *(volatile uint8_t *)0x500C 
 #define PC_CR1 *(volatile uint8_t *)0x500D 
 
-// --- CORRECTED PIN DEFINITIONS ---
-#define ACCESS_PIN 3 // Port C
-#define CLK_PIN    7 // Port C (SHCP - Shift Register Clock)
-#define DATA_PIN   6 // Port C (DS - Serial Data Input)
-#define STORE_PIN  5 // Port C (STCP - Storage Register Clock / Latch)
-#define CONFIG_PIN 4 // Port B
+// --- PIN DEFINITIONS ---
+#define ACCESS_PIN  3 // Port C
+#define CLK_PIN     7 // Port C (SHCP - Shift Register Clock)
+#define DATA_PIN    6 // Port C (DS - Serial Data Input)
+#define STORE_PIN   5 // Port C (STCP - Storage Register Clock / Latch)
+#define CONFIG_PIN1 4 // Port B
+#define CONFIG_PIN2 5 // Port B
 
 // Function to shift 8 bits to the 74HC595
 void update_shift_register(uint8_t data) {
@@ -42,10 +43,10 @@ void update_shift_register(uint8_t data) {
 int main(void) {
     // --- SETUP ---
     
-    // Configure PB4 (CONFIG) as an output and set it LOW
-    PB_DDR |= (1 << CONFIG_PIN); 
-    PB_CR1 |= (1 << CONFIG_PIN); // Push-pull
-    PB_ODR &= ~(1 << CONFIG_PIN); // Drive it LOW (stays here forever)
+    // Configure PB4 and PB5 as outputs and set them LOW
+    PB_DDR |= (1 << CONFIG_PIN1) | (1 << CONFIG_PIN2); 
+    PB_CR1 |= (1 << CONFIG_PIN1) | (1 << CONFIG_PIN2); // Push-pull
+    PB_ODR &= ~((1 << CONFIG_PIN1) | (1 << CONFIG_PIN2)); // Drive them LOW (stays here forever)
 
     // Configure PC3 (ACCESS) as an Input
     PC_DDR &= ~(1 << ACCESS_PIN); 
