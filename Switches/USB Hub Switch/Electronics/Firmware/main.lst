@@ -171,8 +171,8 @@
       00006E C6 50 0A         [ 1]  171 	ld	a, 0x500a
       000071 A4 1F            [ 1]  172 	and	a, #0x1f
       000073 C7 50 0A         [ 1]  173 	ld	0x500a, a
-                                    174 ;	main.c: 63: update_shift_register(0xFF);
-      000076 A6 FF            [ 1]  175 	ld	a, #0xff
+                                    174 ;	main.c: 63: update_shift_register(0x3F);
+      000076 A6 3F            [ 1]  175 	ld	a, #0x3f
       000078 CDr00r00         [ 4]  176 	call	_update_shift_register
                                     177 ;	main.c: 66: uint8_t current_state = (PC_IDR & (1 << ACCESS_PIN)) ? 1 : 0;
       00007B 72 07 50 0B 03   [ 2]  178 	btjf	0x500b, #3, 00117$
@@ -221,23 +221,23 @@
                                     221 ;	main.c: 84: if (current_state == 1) {
       0000B8 7B 04            [ 1]  222 	ld	a, (0x04, sp)
       0000BA 4A               [ 1]  223 	dec	a
-      0000BB 26 07            [ 1]  224 	jrne	00103$
-                                    225 ;	main.c: 86: update_shift_register(0xC0); // 0xC0 = 1100 0000
-      0000BD A6 C0            [ 1]  226 	ld	a, #0xc0
-      0000BF CDr00r00         [ 4]  227 	call	_update_shift_register
-      0000C2 20 05            [ 2]  228 	jra	00104$
-      0000C4                        229 00103$:
-                                    230 ;	main.c: 89: update_shift_register(0x3F); // 0x3F = 0011 1111
-      0000C4 A6 3F            [ 1]  231 	ld	a, #0x3f
-      0000C6 CDr00r00         [ 4]  232 	call	_update_shift_register
-      0000C9                        233 00104$:
+      0000BB 26 06            [ 1]  224 	jrne	00103$
+                                    225 ;	main.c: 86: update_shift_register(0x00); 
+      0000BD 4F               [ 1]  226 	clr	a
+      0000BE CDr00r00         [ 4]  227 	call	_update_shift_register
+      0000C1 20 05            [ 2]  228 	jra	00104$
+      0000C3                        229 00103$:
+                                    230 ;	main.c: 89: update_shift_register(0x3F); 
+      0000C3 A6 3F            [ 1]  231 	ld	a, #0x3f
+      0000C5 CDr00r00         [ 4]  232 	call	_update_shift_register
+      0000C8                        233 00104$:
                                     234 ;	main.c: 93: last_state = current_state; 
-      0000C9 7B 04            [ 1]  235 	ld	a, (0x04, sp)
-      0000CB 6B 03            [ 1]  236 	ld	(0x03, sp), a
-      0000CD 20 B7            [ 2]  237 	jra	00110$
+      0000C8 7B 04            [ 1]  235 	ld	a, (0x04, sp)
+      0000CA 6B 03            [ 1]  236 	ld	(0x03, sp), a
+      0000CC 20 B8            [ 2]  237 	jra	00110$
                                     238 ;	main.c: 97: }
-      0000CF 5B 05            [ 2]  239 	addw	sp, #5
-      0000D1 81               [ 4]  240 	ret
+      0000CE 5B 05            [ 2]  239 	addw	sp, #5
+      0000D0 81               [ 4]  240 	ret
                                     241 	.area CODE
                                     242 	.area CONST
                                     243 	.area INITIALIZER

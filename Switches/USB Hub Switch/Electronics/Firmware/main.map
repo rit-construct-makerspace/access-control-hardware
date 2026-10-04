@@ -25,7 +25,7 @@ Area                                    Addr        Size        Decimal Bytes (A
      00000003  l_GSFINAL                       
      00000007  l_HOME                          
      00000023  l_GSINIT                        
-     000000D4  l_CODE                          
+     000000D3  l_CODE                          
      00008000  s_HOME                          
      00008007  s_GSINIT                        
      0000802A  s_GSFINAL                       
@@ -74,13 +74,13 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CODE                                0000802D    000000D4 =         212. bytes (REL,CON)
+CODE                                0000802D    000000D3 =         211. bytes (REL,CON)
 
          Value  Global                             Global Defined In Module
          -----  --------------------------------   ------------------------
      0000802D  _update_shift_register             main
      00008069  _main                              main
-     000080FF  ___sdcc_external_startup           _startup
+     000080FE  ___sdcc_external_startup           _startup
 ASxxxx Linker V05.50.4-SDLD,  page 7.
 
 Files Linked                              [ module(s) ]

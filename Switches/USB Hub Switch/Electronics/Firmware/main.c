@@ -59,8 +59,8 @@ int main(void) {
     // Ensure initial SPI clock/data/latch states are low
     PC_ODR &= ~((1 << CLK_PIN) | (1 << DATA_PIN) | (1 << STORE_PIN));
 
-    // Set all shift register outputs HIGH on boot (0xFF = 1111 1111)
-    update_shift_register(0xFF);
+    // Set outputs 0-5 HIGH and 6-7 LOW on boot (0x3F = 0011 1111)
+    update_shift_register(0x3F);
 
     // Read the starting state of the ACCESS pin
     uint8_t current_state = (PC_IDR & (1 << ACCESS_PIN)) ? 1 : 0;
@@ -82,11 +82,11 @@ int main(void) {
             if (((PC_IDR & (1 << ACCESS_PIN)) ? 1 : 0) == current_state) {
                 
                 if (current_state == 1) {
-                    // Low to High transition: 0-5 LOW, 6-7 HIGH
-                    update_shift_register(0xC0); // 0xC0 = 1100 0000
+                    // Low to High transition: All outputs LOW (0x00 = 0000 0000)
+                    update_shift_register(0x00); 
                 } else {
-                    // High to Low transition: 0-5 HIGH, 6-7 LOW
-                    update_shift_register(0x3F); // 0x3F = 0011 1111
+                    // High to Low transition: 0-5 HIGH, 6-7 LOW (0x3F = 0011 1111)
+                    update_shift_register(0x3F); 
                 }
                 
                 // Save the new state

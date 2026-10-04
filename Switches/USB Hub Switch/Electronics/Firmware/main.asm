@@ -171,8 +171,8 @@ _main:
 	ld	a, 0x500a
 	and	a, #0x1f
 	ld	0x500a, a
-;	main.c: 63: update_shift_register(0xFF);
-	ld	a, #0xff
+;	main.c: 63: update_shift_register(0x3F);
+	ld	a, #0x3f
 	call	_update_shift_register
 ;	main.c: 66: uint8_t current_state = (PC_IDR & (1 << ACCESS_PIN)) ? 1 : 0;
 	btjf	0x500b, #3, 00117$
@@ -222,12 +222,12 @@ _main:
 	ld	a, (0x04, sp)
 	dec	a
 	jrne	00103$
-;	main.c: 86: update_shift_register(0xC0); // 0xC0 = 1100 0000
-	ld	a, #0xc0
+;	main.c: 86: update_shift_register(0x00); 
+	clr	a
 	call	_update_shift_register
 	jra	00104$
 00103$:
-;	main.c: 89: update_shift_register(0x3F); // 0x3F = 0011 1111
+;	main.c: 89: update_shift_register(0x3F); 
 	ld	a, #0x3f
 	call	_update_shift_register
 00104$:

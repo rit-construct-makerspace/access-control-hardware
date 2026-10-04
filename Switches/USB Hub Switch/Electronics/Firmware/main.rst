@@ -50,7 +50,7 @@
                                      50 	.area GSINIT
                                      51 	.area GSFINAL
                                      52 	.area GSINIT
-      008007 CD 80 FF         [ 4]   53 	call	___sdcc_external_startup
+      008007 CD 80 FE         [ 4]   53 	call	___sdcc_external_startup
       00800A 4D               [ 1]   54 	tnz	a
       00800B 27 03            [ 1]   55 	jreq	__sdcc_init_data
       00800D CC 80 04         [ 2]   56 	jp	__sdcc_program_startup
@@ -171,8 +171,8 @@
       00809B C6 50 0A         [ 1]  171 	ld	a, 0x500a
       00809E A4 1F            [ 1]  172 	and	a, #0x1f
       0080A0 C7 50 0A         [ 1]  173 	ld	0x500a, a
-                                    174 ;	main.c: 63: update_shift_register(0xFF);
-      0080A3 A6 FF            [ 1]  175 	ld	a, #0xff
+                                    174 ;	main.c: 63: update_shift_register(0x3F);
+      0080A3 A6 3F            [ 1]  175 	ld	a, #0x3f
       0080A5 CD 80 2D         [ 4]  176 	call	_update_shift_register
                                     177 ;	main.c: 66: uint8_t current_state = (PC_IDR & (1 << ACCESS_PIN)) ? 1 : 0;
       0080A8 72 07 50 0B 03   [ 2]  178 	btjf	0x500b, #3, 00117$
@@ -221,23 +221,23 @@
                                     221 ;	main.c: 84: if (current_state == 1) {
       0080E5 7B 04            [ 1]  222 	ld	a, (0x04, sp)
       0080E7 4A               [ 1]  223 	dec	a
-      0080E8 26 07            [ 1]  224 	jrne	00103$
-                                    225 ;	main.c: 86: update_shift_register(0xC0); // 0xC0 = 1100 0000
-      0080EA A6 C0            [ 1]  226 	ld	a, #0xc0
-      0080EC CD 80 2D         [ 4]  227 	call	_update_shift_register
-      0080EF 20 05            [ 2]  228 	jra	00104$
-      0080F1                        229 00103$:
-                                    230 ;	main.c: 89: update_shift_register(0x3F); // 0x3F = 0011 1111
-      0080F1 A6 3F            [ 1]  231 	ld	a, #0x3f
-      0080F3 CD 80 2D         [ 4]  232 	call	_update_shift_register
-      0080F6                        233 00104$:
+      0080E8 26 06            [ 1]  224 	jrne	00103$
+                                    225 ;	main.c: 86: update_shift_register(0x00); 
+      0080EA 4F               [ 1]  226 	clr	a
+      0080EB CD 80 2D         [ 4]  227 	call	_update_shift_register
+      0080EE 20 05            [ 2]  228 	jra	00104$
+      0080F0                        229 00103$:
+                                    230 ;	main.c: 89: update_shift_register(0x3F); 
+      0080F0 A6 3F            [ 1]  231 	ld	a, #0x3f
+      0080F2 CD 80 2D         [ 4]  232 	call	_update_shift_register
+      0080F5                        233 00104$:
                                     234 ;	main.c: 93: last_state = current_state; 
-      0080F6 7B 04            [ 1]  235 	ld	a, (0x04, sp)
-      0080F8 6B 03            [ 1]  236 	ld	(0x03, sp), a
-      0080FA 20 B7            [ 2]  237 	jra	00110$
+      0080F5 7B 04            [ 1]  235 	ld	a, (0x04, sp)
+      0080F7 6B 03            [ 1]  236 	ld	(0x03, sp), a
+      0080F9 20 B8            [ 2]  237 	jra	00110$
                                     238 ;	main.c: 97: }
-      0080FC 5B 05            [ 2]  239 	addw	sp, #5
-      0080FE 81               [ 4]  240 	ret
+      0080FB 5B 05            [ 2]  239 	addw	sp, #5
+      0080FD 81               [ 4]  240 	ret
                                     241 	.area CODE
                                     242 	.area CONST
                                     243 	.area INITIALIZER
