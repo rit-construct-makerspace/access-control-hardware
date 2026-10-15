@@ -1,0 +1,244 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.6.0 #16555 (MINGW64)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module main
+                                      6 	
+                                      7 ;--------------------------------------------------------
+                                      8 ; Public variables in this module
+                                      9 ;--------------------------------------------------------
+                                     10 	.globl _main
+                                     11 	.globl _update_shift_register
+                                     12 ;--------------------------------------------------------
+                                     13 ; ram data
+                                     14 ;--------------------------------------------------------
+                                     15 	.area DATA
+                                     16 ;--------------------------------------------------------
+                                     17 ; ram data
+                                     18 ;--------------------------------------------------------
+                                     19 	.area INITIALIZED
+                                     20 ;--------------------------------------------------------
+                                     21 ; Stack segment in internal ram
+                                     22 ;--------------------------------------------------------
+                                     23 	.area SSEG
+      000000                         24 __start__stack:
+      000000                         25 	.ds	1
+                                     26 
+                                     27 ;--------------------------------------------------------
+                                     28 ; absolute external ram data
+                                     29 ;--------------------------------------------------------
+                                     30 	.area DABS (ABS)
+                                     31 
+                                     32 ; default segment ordering for linker
+                                     33 	.area HOME
+                                     34 	.area GSINIT
+                                     35 	.area GSFINAL
+                                     36 	.area CONST
+                                     37 	.area INITIALIZER
+                                     38 	.area CODE
+                                     39 
+                                     40 ;--------------------------------------------------------
+                                     41 ; interrupt vector
+                                     42 ;--------------------------------------------------------
+                                     43 	.area HOME
+      000000                         44 __interrupt_vect:
+      000000 82v00u00u00             45 	int s_GSINIT ; reset
+                                     46 ;--------------------------------------------------------
+                                     47 ; global & static initialisations
+                                     48 ;--------------------------------------------------------
+                                     49 	.area HOME
+                                     50 	.area GSINIT
+                                     51 	.area GSFINAL
+                                     52 	.area GSINIT
+      000000 CDr00r00         [ 4]   53 	call	___sdcc_external_startup
+      000003 4D               [ 1]   54 	tnz	a
+      000004 27 03            [ 1]   55 	jreq	__sdcc_init_data
+      000006 CCr00r04         [ 2]   56 	jp	__sdcc_program_startup
+      000009                         57 __sdcc_init_data:
+                                     58 ; stm8_genXINIT() start
+      000009 AEr00r00         [ 2]   59 	ldw x, #l_DATA
+      00000C 27 07            [ 1]   60 	jreq	00002$
+      00000E                         61 00001$:
+      00000E 72 4FuFFuFF      [ 1]   62 	clr (s_DATA - 1, x)
+      000012 5A               [ 2]   63 	decw x
+      000013 26 F9            [ 1]   64 	jrne	00001$
+      000015                         65 00002$:
+      000015 AEr00r00         [ 2]   66 	ldw	x, #l_INITIALIZER
+      000018 27 09            [ 1]   67 	jreq	00004$
+      00001A                         68 00003$:
+      00001A D6uFFuFF         [ 1]   69 	ld	a, (s_INITIALIZER - 1, x)
+      00001D D7uFFuFF         [ 1]   70 	ld	(s_INITIALIZED - 1, x), a
+      000020 5A               [ 2]   71 	decw	x
+      000021 26 F7            [ 1]   72 	jrne	00003$
+      000023                         73 00004$:
+                                     74 ; stm8_genXINIT() end
+                                     75 	.area GSFINAL
+      000000 CCr00r04         [ 2]   76 	jp	__sdcc_program_startup
+                                     77 ;--------------------------------------------------------
+                                     78 ; Home
+                                     79 ;--------------------------------------------------------
+                                     80 	.area HOME
+                                     81 	.area HOME
+      000004                         82 __sdcc_program_startup:
+      000004 CCr00r3C         [ 2]   83 	jp	_main
+                                     84 ;	return from main will return to caller
+                                     85 ;--------------------------------------------------------
+                                     86 ; code
+                                     87 ;--------------------------------------------------------
+                                     88 	.area CODE
+                                     89 ;	main.c: 23: void update_shift_register(uint8_t data) {
+                                     90 ;	-----------------------------------------
+                                     91 ;	 function update_shift_register
+                                     92 ;	-----------------------------------------
+      000000                         93 _update_shift_register:
+      000000 88               [ 1]   94 	push	a
+                                     95 ;	main.c: 25: for (uint8_t i = 0; i < 8; i++) {
+      000001 5F               [ 1]   96 	clrw	x
+      000002                         97 00106$:
+                                     98 ;	main.c: 28: PC_ODR |= (1 << DATA_PIN);  
+      000002 C6 50 0A         [ 1]   99 	ld	a, 0x500a
+                                    100 ;	main.c: 25: for (uint8_t i = 0; i < 8; i++) {
+      000005 88               [ 1]  101 	push	a
+      000006 9F               [ 1]  102 	ld	a, xl
+      000007 A1 08            [ 1]  103 	cp	a, #0x08
+      000009 84               [ 1]  104 	pop	a
+      00000A 24 25            [ 1]  105 	jrnc	00104$
+                                    106 ;	main.c: 27: if (data & 0x80) {
+      00000C 0D 01            [ 1]  107 	tnz	(0x01, sp)
+      00000E 2A 07            [ 1]  108 	jrpl	00102$
+                                    109 ;	main.c: 28: PC_ODR |= (1 << DATA_PIN);  
+      000010 AA 40            [ 1]  110 	or	a, #0x40
+      000012 C7 50 0A         [ 1]  111 	ld	0x500a, a
+      000015 20 05            [ 2]  112 	jra	00103$
+      000017                        113 00102$:
+                                    114 ;	main.c: 30: PC_ODR &= ~(1 << DATA_PIN); 
+      000017 A4 BF            [ 1]  115 	and	a, #0xbf
+      000019 C7 50 0A         [ 1]  116 	ld	0x500a, a
+      00001C                        117 00103$:
+                                    118 ;	main.c: 33: PC_ODR |= (1 << CLK_PIN);   // Clock HIGH
+      00001C C6 50 0A         [ 1]  119 	ld	a, 0x500a
+      00001F AA 80            [ 1]  120 	or	a, #0x80
+      000021 C7 50 0A         [ 1]  121 	ld	0x500a, a
+                                    122 ;	main.c: 34: PC_ODR &= ~(1 << CLK_PIN);  // Clock LOW
+      000024 C6 50 0A         [ 1]  123 	ld	a, 0x500a
+      000027 A4 7F            [ 1]  124 	and	a, #0x7f
+      000029 C7 50 0A         [ 1]  125 	ld	0x500a, a
+                                    126 ;	main.c: 36: data <<= 1; 
+      00002C 08 01            [ 1]  127 	sll	(0x01, sp)
+                                    128 ;	main.c: 25: for (uint8_t i = 0; i < 8; i++) {
+      00002E 5C               [ 1]  129 	incw	x
+      00002F 20 D1            [ 2]  130 	jra	00106$
+      000031                        131 00104$:
+                                    132 ;	main.c: 39: PC_ODR |= (1 << STORE_PIN);  // Store HIGH
+      000031 AA 20            [ 1]  133 	or	a, #0x20
+      000033 C7 50 0A         [ 1]  134 	ld	0x500a, a
+                                    135 ;	main.c: 40: PC_ODR &= ~(1 << STORE_PIN); // Store LOW
+      000036 72 1B 50 0A      [ 1]  136 	bres	0x500a, #5
+                                    137 ;	main.c: 41: }
+      00003A 84               [ 1]  138 	pop	a
+      00003B 81               [ 4]  139 	ret
+                                    140 ;	main.c: 43: int main(void) {
+                                    141 ;	-----------------------------------------
+                                    142 ;	 function main
+                                    143 ;	-----------------------------------------
+      00003C                        144 _main:
+      00003C 52 05            [ 2]  145 	sub	sp, #5
+                                    146 ;	main.c: 47: PB_DDR |= (1 << CONFIG_PIN1) | (1 << CONFIG_PIN2); 
+      00003E C6 50 07         [ 1]  147 	ld	a, 0x5007
+      000041 AA 30            [ 1]  148 	or	a, #0x30
+      000043 C7 50 07         [ 1]  149 	ld	0x5007, a
+                                    150 ;	main.c: 48: PB_CR1 |= (1 << CONFIG_PIN1) | (1 << CONFIG_PIN2); // Push-pull
+      000046 C6 50 08         [ 1]  151 	ld	a, 0x5008
+      000049 AA 30            [ 1]  152 	or	a, #0x30
+      00004B C7 50 08         [ 1]  153 	ld	0x5008, a
+                                    154 ;	main.c: 49: PB_ODR &= ~((1 << CONFIG_PIN1) | (1 << CONFIG_PIN2)); // Drive them LOW (stays here forever)
+      00004E C6 50 05         [ 1]  155 	ld	a, 0x5005
+      000051 A4 CF            [ 1]  156 	and	a, #0xcf
+      000053 C7 50 05         [ 1]  157 	ld	0x5005, a
+                                    158 ;	main.c: 52: PC_DDR &= ~(1 << ACCESS_PIN); 
+      000056 72 17 50 0C      [ 1]  159 	bres	0x500c, #3
+                                    160 ;	main.c: 53: PC_CR1 |= (1 << ACCESS_PIN);  
+      00005A 72 16 50 0D      [ 1]  161 	bset	0x500d, #3
+                                    162 ;	main.c: 56: PC_DDR |= (1 << CLK_PIN) | (1 << DATA_PIN) | (1 << STORE_PIN); 
+      00005E C6 50 0C         [ 1]  163 	ld	a, 0x500c
+      000061 AA E0            [ 1]  164 	or	a, #0xe0
+      000063 C7 50 0C         [ 1]  165 	ld	0x500c, a
+                                    166 ;	main.c: 57: PC_CR1 |= (1 << CLK_PIN) | (1 << DATA_PIN) | (1 << STORE_PIN); 
+      000066 C6 50 0D         [ 1]  167 	ld	a, 0x500d
+      000069 AA E0            [ 1]  168 	or	a, #0xe0
+      00006B C7 50 0D         [ 1]  169 	ld	0x500d, a
+                                    170 ;	main.c: 60: PC_ODR &= ~((1 << CLK_PIN) | (1 << DATA_PIN) | (1 << STORE_PIN));
+      00006E C6 50 0A         [ 1]  171 	ld	a, 0x500a
+      000071 A4 1F            [ 1]  172 	and	a, #0x1f
+      000073 C7 50 0A         [ 1]  173 	ld	0x500a, a
+                                    174 ;	main.c: 63: update_shift_register(0x3F);
+      000076 A6 3F            [ 1]  175 	ld	a, #0x3f
+      000078 CDr00r00         [ 4]  176 	call	_update_shift_register
+                                    177 ;	main.c: 66: uint8_t current_state = (PC_IDR & (1 << ACCESS_PIN)) ? 1 : 0;
+      00007B 72 07 50 0B 03   [ 2]  178 	btjf	0x500b, #3, 00117$
+      000080 A6 01            [ 1]  179 	ld	a, #0x01
+      000082 21                     180 	.byte 0x21
+      000083                        181 00117$:
+      000083 4F               [ 1]  182 	clr	a
+      000084                        183 00118$:
+      000084 6B 03            [ 1]  184 	ld	(0x03, sp), a
+                                    185 ;	main.c: 71: while(1) {
+      000086                        186 00110$:
+                                    187 ;	main.c: 73: current_state = (PC_IDR & (1 << ACCESS_PIN)) ? 1 : 0;
+      000086 72 07 50 0B 03   [ 2]  188 	btjf	0x500b, #3, 00119$
+      00008B A6 01            [ 1]  189 	ld	a, #0x01
+      00008D 21                     190 	.byte 0x21
+      00008E                        191 00119$:
+      00008E 4F               [ 1]  192 	clr	a
+      00008F                        193 00120$:
+                                    194 ;	main.c: 76: if (current_state != last_state) {
+      00008F 6B 04            [ 1]  195 	ld	(0x04, sp), a
+      000091 11 03            [ 1]  196 	cp	a, (0x03, sp)
+      000093 27 F1            [ 1]  197 	jreq	00110$
+                                    198 ;	main.c: 79: for(volatile uint16_t i = 0; i < 2000; i++); 
+      000095 5F               [ 1]  199 	clrw	x
+      000096 1F 01            [ 2]  200 	ldw	(0x01, sp), x
+      000098                        201 00113$:
+      000098 1E 01            [ 2]  202 	ldw	x, (0x01, sp)
+      00009A A3 07 D0         [ 2]  203 	cpw	x, #0x07d0
+      00009D 24 07            [ 1]  204 	jrnc	00101$
+      00009F 1E 01            [ 2]  205 	ldw	x, (0x01, sp)
+      0000A1 5C               [ 1]  206 	incw	x
+      0000A2 1F 01            [ 2]  207 	ldw	(0x01, sp), x
+      0000A4 20 F2            [ 2]  208 	jra	00113$
+      0000A6                        209 00101$:
+                                    210 ;	main.c: 82: if (((PC_IDR & (1 << ACCESS_PIN)) ? 1 : 0) == current_state) {
+      0000A6 72 07 50 0B 05   [ 2]  211 	btjf	0x500b, #3, 00121$
+      0000AB A6 01            [ 1]  212 	ld	a, #0x01
+      0000AD 6B 05            [ 1]  213 	ld	(0x05, sp), a
+      0000AF C5                     214 	.byte 0xc5
+      0000B0                        215 00121$:
+      0000B0 0F 05            [ 1]  216 	clr	(0x05, sp)
+      0000B2                        217 00122$:
+      0000B2 7B 04            [ 1]  218 	ld	a, (0x04, sp)
+      0000B4 11 05            [ 1]  219 	cp	a, (0x05, sp)
+      0000B6 26 CE            [ 1]  220 	jrne	00110$
+                                    221 ;	main.c: 84: if (current_state == 1) {
+      0000B8 7B 04            [ 1]  222 	ld	a, (0x04, sp)
+      0000BA 4A               [ 1]  223 	dec	a
+      0000BB 26 06            [ 1]  224 	jrne	00103$
+                                    225 ;	main.c: 86: update_shift_register(0x00); 
+      0000BD 4F               [ 1]  226 	clr	a
+      0000BE CDr00r00         [ 4]  227 	call	_update_shift_register
+      0000C1 20 05            [ 2]  228 	jra	00104$
+      0000C3                        229 00103$:
+                                    230 ;	main.c: 89: update_shift_register(0x3F); 
+      0000C3 A6 3F            [ 1]  231 	ld	a, #0x3f
+      0000C5 CDr00r00         [ 4]  232 	call	_update_shift_register
+      0000C8                        233 00104$:
+                                    234 ;	main.c: 93: last_state = current_state; 
+      0000C8 7B 04            [ 1]  235 	ld	a, (0x04, sp)
+      0000CA 6B 03            [ 1]  236 	ld	(0x03, sp), a
+      0000CC 20 B8            [ 2]  237 	jra	00110$
+                                    238 ;	main.c: 97: }
+      0000CE 5B 05            [ 2]  239 	addw	sp, #5
+      0000D0 81               [ 4]  240 	ret
+                                    241 	.area CODE
+                                    242 	.area CONST
+                                    243 	.area INITIALIZER
+                                    244 	.area CABS (ABS)
